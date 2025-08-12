@@ -578,6 +578,31 @@ local Settings = {
 -- ===================================================================
 --                       COMPLETE GUI CREATION
 -- ===================================================================
+-- Global variables for GUI management
+local mainGui = nil
+local floatingButton = nil
+local guiVisible = true
+
+local function toggleGUI()
+    if mainGui then
+        guiVisible = not guiVisible
+        mainGui.Enabled = guiVisible
+        
+        -- Update floating button appearance
+        if floatingButton then
+            if guiVisible then
+                floatingButton.Text = "🎣"
+                floatingButton.BackgroundColor3 = Color3.fromRGB(0, 162, 255)
+                createNotification("🎣 GUI Opened", Color3.fromRGB(0, 255, 0))
+            else
+                floatingButton.Text = "👁️"
+                floatingButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+                createNotification("👁️ GUI Hidden", Color3.fromRGB(255, 165, 0))
+            end
+        end
+    end
+end
+
 local function createFloatingToggleButton()
     -- Create separate ScreenGui for floating button so it persists
     local FloatingGui = Instance.new("ScreenGui")
@@ -637,6 +662,9 @@ local function createFloatingToggleButton()
             dragging = false
         end
     end)
+    
+    -- Connect to toggle function
+    FloatingButton.MouseButton1Click:Connect(toggleGUI)
     
     return FloatingButton
 end
@@ -1743,12 +1771,9 @@ local function createCompleteGUI()
     -- ===================================================================
     
     connections[#connections + 1] = ExitBtn.MouseButton1Click:Connect(function()
-        ZayrosFISHIT:Destroy()
-        for _, connection in pairs(connections) do
-            if connection and connection.Connected then
-                connection:Disconnect()
-            end
-        end
+        -- Use the global toggle function to hide GUI
+        guiVisible = true -- Set to true so toggleGUI will make it false
+        toggleGUI()
     end)
 
     connections[#connections + 1] = AutoFishButton.MouseButton1Click:Connect(function()
@@ -2019,47 +2044,19 @@ end
 local function initialize()
     loadSettings()
     
-    -- Create floating toggle button first
-    local floatingButton = createFloatingToggleButton()
+    -- Create floating toggle button and store in global variable
+    floatingButton = createFloatingToggleButton()
     
-    -- Create main GUI
-    local gui = createCompleteGUI()
+    -- Create main GUI and store in global variable
+    mainGui = createCompleteGUI()
     
-    -- Variable to track GUI visibility
-    local guiVisible = true
-    
-    -- Connect floating button to toggle GUI
-    floatingButton.MouseButton1Click:Connect(function()
-        guiVisible = not guiVisible
-        gui.Enabled = guiVisible
-        
-        -- Update floating button appearance
-        if guiVisible then
-            floatingButton.Text = "🎣"
-            floatingButton.BackgroundColor3 = Color3.fromRGB(0, 162, 255)
-            createNotification("🎣 GUI Opened", Color3.fromRGB(0, 255, 0))
-        else
-            floatingButton.Text = "👁️"
-            floatingButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-            createNotification("👁️ GUI Hidden", Color3.fromRGB(255, 165, 0))
-        end
-    end)
+    -- Initialize GUI as visible
+    guiVisible = true
     
     -- Add hotkey support (F9 to toggle)
     connections[#connections + 1] = UserInputService.InputBegan:Connect(function(input, gameProcessed)
         if not gameProcessed and input.KeyCode == CONFIG.HOTKEY then
-            guiVisible = not guiVisible
-            gui.Enabled = guiVisible
-            
-            if guiVisible then
-                floatingButton.Text = "🎣"
-                floatingButton.BackgroundColor3 = Color3.fromRGB(0, 162, 255)
-                createNotification("🎣 GUI Opened (F9)", Color3.fromRGB(0, 255, 0))
-            else
-                floatingButton.Text = "👁️"
-                floatingButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-                createNotification("👁️ GUI Hidden (F9)", Color3.fromRGB(255, 165, 0))
-            end
+            toggleGUI()
         end
     end)
     
