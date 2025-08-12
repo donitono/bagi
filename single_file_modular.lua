@@ -363,6 +363,194 @@ local function enhancedAutoFishing(Settings)
     end)
 end
 
+local function autoFishingAFK2()
+    task.spawn(function()
+        while Settings.AutoFishingAFK2 do
+            safeCall(function()
+                -- Safety check
+                if Settings.SafeMode then
+                    local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
+                    if humanoid and humanoid.Health < 20 then
+                        warn("⚠️ [AFK2] Low health detected! Stopping auto fishing.")
+                        task.wait(5)
+                        return
+                    end
+                end
+                
+                -- Custom delay (slightly faster than regular)
+                local afk2Delay = math.random(300, 600) / 1000
+                
+                local char = player.Character or player.CharacterAdded:Wait()
+                local equippedTool = char:FindFirstChild("!!!EQUIPPED_TOOL!!!")
+
+                if not equippedTool then
+                    CancelFishing:InvokeServer()
+                    task.wait(afk2Delay)
+                    EquipRod:FireServer(1)
+                end
+
+                task.wait(afk2Delay)
+                ChargeRod:InvokeServer(workspace:GetServerTimeNow())
+                
+                task.wait(afk2Delay)
+                RequestFishing:InvokeServer(-1.2379989624023438, 0.9800224985802423)
+                
+                task.wait(0.4 + afk2Delay)
+                FishingComplete:FireServer()
+                
+                Stats.fishCaught = Stats.fishCaught + 1
+                
+                local rarity, color = getFishRarity(Settings)
+                local fishValue = simulateFishValue(rarity)
+                Stats.moneyEarned = Stats.moneyEarned + fishValue
+                
+                if rarity ~= "Common" then
+                    createNotification("🎣 [AFK2] Caught " .. rarity .. " fish! (₡" .. fishValue .. ")", color)
+                    if rarity == "Legendary" or rarity == "Mythical" then
+                        Stats.bestFish = rarity .. " Fish"
+                    end
+                end
+                
+                updateLuckLevel()
+                
+                if Settings.AutoSell and Stats.fishCaught % 10 == 0 then
+                    task.wait(1)
+                    safeCall(function()
+                        sellAll:InvokeServer()
+                        createNotification("🛒 [AFK2] Auto-sold items!", Color3.fromRGB(255, 215, 0))
+                    end)
+                end
+                
+                task.wait(afk2Delay)
+                
+            end)
+        end
+    end)
+end
+
+local function autoFishingExtreme()
+    task.spawn(function()
+        while Settings.AutoFishingExtreme do
+            safeCall(function()
+                -- Minimal safety check 
+                local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
+                if humanoid and humanoid.Health < 10 then
+                    warn("⚠️ [EXTREME] Critical health! Pausing...")
+                    task.wait(2)
+                    return
+                end
+                
+                -- Ultra fast delay
+                local extremeDelay = math.random(50, 150) / 1000
+                
+                local char = player.Character or player.CharacterAdded:Wait()
+                local equippedTool = char:FindFirstChild("!!!EQUIPPED_TOOL!!!")
+
+                if not equippedTool then
+                    EquipRod:FireServer(1)
+                    task.wait(extremeDelay)
+                end
+
+                -- Rapid fire fishing sequence
+                ChargeRod:InvokeServer(workspace:GetServerTimeNow())
+                task.wait(extremeDelay)
+                
+                RequestFishing:InvokeServer(-1.2379989624023438, 0.9800224985802423)
+                task.wait(extremeDelay)
+                
+                FishingComplete:FireServer()
+                
+                Stats.fishCaught = Stats.fishCaught + 1
+                
+                local rarity, color = getFishRarity(Settings)
+                local fishValue = simulateFishValue(rarity)
+                Stats.moneyEarned = Stats.moneyEarned + fishValue
+                
+                -- Only show notifications for rare fish to avoid spam
+                if rarity == "Legendary" or rarity == "Mythical" then
+                    createNotification("⚡ [EXTREME] " .. rarity .. " fish! (₡" .. fishValue .. ")", color)
+                    Stats.bestFish = rarity .. " Fish"
+                end
+                
+                updateLuckLevel()
+                
+                -- Auto sell more frequently for extreme mode
+                if Settings.AutoSell and Stats.fishCaught % 20 == 0 then
+                    safeCall(function()
+                        sellAll:InvokeServer()
+                        createNotification("🛒 [EXTREME] Auto-sold items!", Color3.fromRGB(255, 215, 0))
+                    end)
+                end
+                
+                task.wait(extremeDelay)
+                
+            end)
+        end
+    end)
+end
+
+local function autoFishingBrutal()
+    task.spawn(function()
+        while Settings.AutoFishingBrutal do
+            safeCall(function()
+                -- Optional safety check
+                local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
+                if humanoid and humanoid.Health < 10 then
+                    warn("⚠️ [BRUTAL] Critical health! Pausing...")
+                    task.wait(2)
+                    return
+                end
+                
+                -- Use custom very fast delay
+                local brutalDelay = math.random(10, 50) / 1000
+                
+                local char = player.Character or player.CharacterAdded:Wait()
+                local equippedTool = char:FindFirstChild("!!!EQUIPPED_TOOL!!!")
+
+                if not equippedTool then
+                    EquipRod:FireServer(1)
+                    task.wait(brutalDelay)
+                end
+
+                -- Ultra custom speed fishing sequence
+                ChargeRod:InvokeServer(workspace:GetServerTimeNow())
+                task.wait(brutalDelay)
+                
+                RequestFishing:InvokeServer(-1.2379989624023438, 0.9800224985802423)
+                task.wait(brutalDelay)
+                
+                FishingComplete:FireServer()
+                
+                Stats.fishCaught = Stats.fishCaught + 1
+                
+                local rarity, color = getFishRarity(Settings)
+                local fishValue = simulateFishValue(rarity)
+                Stats.moneyEarned = Stats.moneyEarned + fishValue
+                
+                if rarity ~= "Common" then
+                    createNotification("🔥 [BRUTAL] " .. rarity .. " fish! (₡" .. fishValue .. ")", color)
+                    if rarity == "Legendary" or rarity == "Mythical" then
+                        Stats.bestFish = rarity .. " Fish"
+                    end
+                end
+                
+                updateLuckLevel()
+                
+                -- Auto sell very frequently for brutal mode
+                if Settings.AutoSell and Stats.fishCaught % 30 == 0 then
+                    safeCall(function()
+                        sellAll:InvokeServer()
+                        createNotification("🛒 [BRUTAL] Auto-sold items!", Color3.fromRGB(255, 215, 0))
+                    end)
+                end
+                
+                task.wait(brutalDelay)
+                
+            end)
+        end
+    end)
+end
+
 -- ===================================================================
 --                           SETTINGS
 -- ===================================================================
@@ -619,6 +807,138 @@ local function createCompleteGUI()
     
     local autoFishWarnaCorner = Instance.new("UICorner")
     autoFishWarnaCorner.Parent = AutoFishWarna
+
+    -- Auto Fish AFK2 Frame
+    local AutoFishAFK2Frame = Instance.new("Frame")
+    AutoFishAFK2Frame.Name = "AutoFishAFK2Frame"
+    AutoFishAFK2Frame.Parent = MainListLayoutFrame
+    AutoFishAFK2Frame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    AutoFishAFK2Frame.BorderSizePixel = 0
+    AutoFishAFK2Frame.Size = UDim2.new(0.898, 0, 0.106, 0)
+    
+    local autoFishAFK2Corner = Instance.new("UICorner")
+    autoFishAFK2Corner.Parent = AutoFishAFK2Frame
+
+    local AutoFishAFK2Text = Instance.new("TextLabel")
+    AutoFishAFK2Text.Parent = AutoFishAFK2Frame
+    AutoFishAFK2Text.BackgroundTransparency = 1
+    AutoFishAFK2Text.Position = UDim2.new(0.030, 0, 0.216, 0)
+    AutoFishAFK2Text.Size = UDim2.new(0.415, 0, 0.568, 0)
+    AutoFishAFK2Text.Font = Enum.Font.SourceSansBold
+    AutoFishAFK2Text.Text = "Auto Fish (AFK2) :"
+    AutoFishAFK2Text.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoFishAFK2Text.TextScaled = true
+    AutoFishAFK2Text.TextXAlignment = Enum.TextXAlignment.Left
+
+    local AutoFishAFK2Button = Instance.new("TextButton")
+    AutoFishAFK2Button.Name = "AutoFishAFK2Button"
+    AutoFishAFK2Button.Parent = AutoFishAFK2Frame
+    AutoFishAFK2Button.BackgroundTransparency = 1
+    AutoFishAFK2Button.Position = UDim2.new(0.756, 0, 0.108, 0)
+    AutoFishAFK2Button.Size = UDim2.new(0.207, 0, 0.784, 0)
+    AutoFishAFK2Button.ZIndex = 2
+    AutoFishAFK2Button.Font = Enum.Font.SourceSansBold
+    AutoFishAFK2Button.Text = "OFF"
+    AutoFishAFK2Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoFishAFK2Button.TextScaled = true
+
+    local AutoFishAFK2Warna = Instance.new("Frame")
+    AutoFishAFK2Warna.Parent = AutoFishAFK2Frame
+    AutoFishAFK2Warna.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    AutoFishAFK2Warna.BorderSizePixel = 0
+    AutoFishAFK2Warna.Position = UDim2.new(0.756, 0, 0.135, 0)
+    AutoFishAFK2Warna.Size = UDim2.new(0.204, 0, 0.730, 0)
+    
+    local autoFishAFK2WarnaCorner = Instance.new("UICorner")
+    autoFishAFK2WarnaCorner.Parent = AutoFishAFK2Warna
+
+    -- Auto Fish Extreme Frame
+    local AutoFishExtremeFrame = Instance.new("Frame")
+    AutoFishExtremeFrame.Name = "AutoFishExtremeFrame"
+    AutoFishExtremeFrame.Parent = MainListLayoutFrame
+    AutoFishExtremeFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    AutoFishExtremeFrame.BorderSizePixel = 0
+    AutoFishExtremeFrame.Size = UDim2.new(0.898, 0, 0.106, 0)
+    
+    local autoFishExtremeCorner = Instance.new("UICorner")
+    autoFishExtremeCorner.Parent = AutoFishExtremeFrame
+
+    local AutoFishExtremeText = Instance.new("TextLabel")
+    AutoFishExtremeText.Parent = AutoFishExtremeFrame
+    AutoFishExtremeText.BackgroundTransparency = 1
+    AutoFishExtremeText.Position = UDim2.new(0.030, 0, 0.216, 0)
+    AutoFishExtremeText.Size = UDim2.new(0.415, 0, 0.568, 0)
+    AutoFishExtremeText.Font = Enum.Font.SourceSansBold
+    AutoFishExtremeText.Text = "Auto Fish (Extreme) :"
+    AutoFishExtremeText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoFishExtremeText.TextScaled = true
+    AutoFishExtremeText.TextXAlignment = Enum.TextXAlignment.Left
+
+    local AutoFishExtremeButton = Instance.new("TextButton")
+    AutoFishExtremeButton.Name = "AutoFishExtremeButton"
+    AutoFishExtremeButton.Parent = AutoFishExtremeFrame
+    AutoFishExtremeButton.BackgroundTransparency = 1
+    AutoFishExtremeButton.Position = UDim2.new(0.756, 0, 0.108, 0)
+    AutoFishExtremeButton.Size = UDim2.new(0.207, 0, 0.784, 0)
+    AutoFishExtremeButton.ZIndex = 2
+    AutoFishExtremeButton.Font = Enum.Font.SourceSansBold
+    AutoFishExtremeButton.Text = "OFF"
+    AutoFishExtremeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoFishExtremeButton.TextScaled = true
+
+    local AutoFishExtremeWarna = Instance.new("Frame")
+    AutoFishExtremeWarna.Parent = AutoFishExtremeFrame
+    AutoFishExtremeWarna.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    AutoFishExtremeWarna.BorderSizePixel = 0
+    AutoFishExtremeWarna.Position = UDim2.new(0.756, 0, 0.135, 0)
+    AutoFishExtremeWarna.Size = UDim2.new(0.204, 0, 0.730, 0)
+    
+    local autoFishExtremeWarnaCorner = Instance.new("UICorner")
+    autoFishExtremeWarnaCorner.Parent = AutoFishExtremeWarna
+
+    -- Auto Fish Brutal Frame
+    local AutoFishBrutalFrame = Instance.new("Frame")
+    AutoFishBrutalFrame.Name = "AutoFishBrutalFrame"
+    AutoFishBrutalFrame.Parent = MainListLayoutFrame
+    AutoFishBrutalFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    AutoFishBrutalFrame.BorderSizePixel = 0
+    AutoFishBrutalFrame.Size = UDim2.new(0.898, 0, 0.106, 0)
+    
+    local autoFishBrutalCorner = Instance.new("UICorner")
+    autoFishBrutalCorner.Parent = AutoFishBrutalFrame
+
+    local AutoFishBrutalText = Instance.new("TextLabel")
+    AutoFishBrutalText.Parent = AutoFishBrutalFrame
+    AutoFishBrutalText.BackgroundTransparency = 1
+    AutoFishBrutalText.Position = UDim2.new(0.030, 0, 0.216, 0)
+    AutoFishBrutalText.Size = UDim2.new(0.415, 0, 0.568, 0)
+    AutoFishBrutalText.Font = Enum.Font.SourceSansBold
+    AutoFishBrutalText.Text = "Auto Fish (Brutal) :"
+    AutoFishBrutalText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoFishBrutalText.TextScaled = true
+    AutoFishBrutalText.TextXAlignment = Enum.TextXAlignment.Left
+
+    local AutoFishBrutalButton = Instance.new("TextButton")
+    AutoFishBrutalButton.Name = "AutoFishBrutalButton"
+    AutoFishBrutalButton.Parent = AutoFishBrutalFrame
+    AutoFishBrutalButton.BackgroundTransparency = 1
+    AutoFishBrutalButton.Position = UDim2.new(0.756, 0, 0.108, 0)
+    AutoFishBrutalButton.Size = UDim2.new(0.207, 0, 0.784, 0)
+    AutoFishBrutalButton.ZIndex = 2
+    AutoFishBrutalButton.Font = Enum.Font.SourceSansBold
+    AutoFishBrutalButton.Text = "OFF"
+    AutoFishBrutalButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoFishBrutalButton.TextScaled = true
+
+    local AutoFishBrutalWarna = Instance.new("Frame")
+    AutoFishBrutalWarna.Parent = AutoFishBrutalFrame
+    AutoFishBrutalWarna.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    AutoFishBrutalWarna.BorderSizePixel = 0
+    AutoFishBrutalWarna.Position = UDim2.new(0.756, 0, 0.135, 0)
+    AutoFishBrutalWarna.Size = UDim2.new(0.204, 0, 0.730, 0)
+    
+    local autoFishBrutalWarnaCorner = Instance.new("UICorner")
+    autoFishBrutalWarnaCorner.Parent = AutoFishBrutalWarna
 
     -- Sell All Frame
     local SellAllFrame = Instance.new("Frame")
@@ -1377,6 +1697,42 @@ local function createCompleteGUI()
             createNotification("🎣 Auto Fishing started!", Color3.fromRGB(0, 200, 0))
         else
             createNotification("🎣 Auto Fishing stopped!", Color3.fromRGB(200, 0, 0))
+        end
+    end)
+
+    connections[#connections + 1] = AutoFishAFK2Button.MouseButton1Click:Connect(function()
+        Settings.AutoFishingAFK2 = not Settings.AutoFishingAFK2
+        AutoFishAFK2Button.Text = Settings.AutoFishingAFK2 and "ON" or "OFF"
+        AutoFishAFK2Warna.BackgroundColor3 = Settings.AutoFishingAFK2 and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(0, 0, 0)
+        if Settings.AutoFishingAFK2 then
+            autoFishingAFK2()
+            createNotification("🎣 Auto Fishing AFK2 started!", Color3.fromRGB(0, 150, 255))
+        else
+            createNotification("🎣 Auto Fishing AFK2 stopped!", Color3.fromRGB(200, 0, 0))
+        end
+    end)
+
+    connections[#connections + 1] = AutoFishExtremeButton.MouseButton1Click:Connect(function()
+        Settings.AutoFishingExtreme = not Settings.AutoFishingExtreme
+        AutoFishExtremeButton.Text = Settings.AutoFishingExtreme and "ON" or "OFF"
+        AutoFishExtremeWarna.BackgroundColor3 = Settings.AutoFishingExtreme and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(0, 0, 0)
+        if Settings.AutoFishingExtreme then
+            autoFishingExtreme()
+            createNotification("⚡ Auto Fishing EXTREME started!", Color3.fromRGB(255, 165, 0))
+        else
+            createNotification("⚡ Auto Fishing EXTREME stopped!", Color3.fromRGB(200, 0, 0))
+        end
+    end)
+
+    connections[#connections + 1] = AutoFishBrutalButton.MouseButton1Click:Connect(function()
+        Settings.AutoFishingBrutal = not Settings.AutoFishingBrutal
+        AutoFishBrutalButton.Text = Settings.AutoFishingBrutal and "ON" or "OFF"
+        AutoFishBrutalWarna.BackgroundColor3 = Settings.AutoFishingBrutal and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(0, 0, 0)
+        if Settings.AutoFishingBrutal then
+            autoFishingBrutal()
+            createNotification("🔥 Auto Fishing BRUTAL started!", Color3.fromRGB(255, 0, 0))
+        else
+            createNotification("🔥 Auto Fishing BRUTAL stopped!", Color3.fromRGB(200, 0, 0))
         end
     end)
 
