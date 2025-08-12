@@ -319,6 +319,35 @@ end
 -- ===================================================================
 --                        FISHING MODULE
 -- ===================================================================
+
+-- Helper function for AFK2 delay modes
+local function getAFK2Delay(Settings)
+    if Settings.AFK2_DelayMode == "RANDOM" then
+        return math.random(Settings.AFK2_MinDelay * 1000, Settings.AFK2_MaxDelay * 1000) / 1000
+    elseif Settings.AFK2_DelayMode == "CUSTOM" then
+        return Settings.AFK2_CustomDelay
+    elseif Settings.AFK2_DelayMode == "FIXED" then
+        return Settings.AFK2_FixedDelay
+    else -- AFK2 mode
+        return 1.0
+    end
+end
+
+-- Helper function for Extreme delay modes
+local function getExtremeDelay(Settings)
+    if Settings.ExtremeSpeed == "LOW" then
+        return 0.15
+    elseif Settings.ExtremeSpeed == "MEDIUM" then
+        return 0.1
+    elseif Settings.ExtremeSpeed == "HIGH" then
+        return 0.05
+    elseif Settings.ExtremeSpeed == "INSANE" then
+        return 0.01
+    else
+        return Settings.ExtremeDelay
+    end
+end
+
 local function enhancedAutoFishing(Settings)
     task.spawn(function()
         while Settings.AutoFishing do
@@ -379,7 +408,7 @@ local function enhancedAutoFishing(Settings)
     end)
 end
 
-local function autoFishingAFK2()
+local function autoFishingAFK2(Settings)
     task.spawn(function()
         while Settings.AutoFishingAFK2 do
             safeCall(function()
@@ -393,29 +422,30 @@ local function autoFishingAFK2()
                     end
                 end
                 
-                -- Custom delay (slightly faster than regular)
-                local afk2Delay = math.random(300, 600) / 1000
+                -- Custom delay before starting
+                task.wait(getAFK2Delay(Settings))
                 
                 local char = player.Character or player.CharacterAdded:Wait()
                 local equippedTool = char:FindFirstChild("!!!EQUIPPED_TOOL!!!")
 
                 if not equippedTool then
-                    CancelFishing:InvokeServer()
-                    task.wait(afk2Delay)
-                    EquipRod:FireServer(1)
+                    Remotes.CancelFishing:InvokeServer()
+                    task.wait(getAFK2Delay(Settings))
+                    Remotes.EquipRod:FireServer(1)
                 end
 
-                task.wait(afk2Delay)
-                ChargeRod:InvokeServer(workspace:GetServerTimeNow())
+                task.wait(getAFK2Delay(Settings))
+                Remotes.ChargeRod:InvokeServer(workspace:GetServerTimeNow())
                 
-                task.wait(afk2Delay)
-                RequestFishing:InvokeServer(-1.2379989624023438, 0.9800224985802423)
+                task.wait(getAFK2Delay(Settings))
+                Remotes.RequestFishing:InvokeServer(-1.2379989624023438, 0.9800224985802423)
                 
-                task.wait(0.4 + afk2Delay)
-                FishingComplete:FireServer()
+                task.wait(0.4 + getAFK2Delay(Settings))
+                Remotes.FishingComplete:FireServer()
                 
                 Stats.fishCaught = Stats.fishCaught + 1
                 
+                -- Simulate fish catch with luck system
                 local rarity, color = getFishRarity(Settings)
                 local fishValue = simulateFishValue(rarity)
                 Stats.moneyEarned = Stats.moneyEarned + fishValue
@@ -444,37 +474,39 @@ local function autoFishingAFK2()
     end)
 end
 
-local function autoFishingExtreme()
+local function autoFishingExtreme(Settings)
     task.spawn(function()
         while Settings.AutoFishingExtreme do
             safeCall(function()
-                -- Minimal safety check 
-                local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
-                if humanoid and humanoid.Health < 10 then
-                    warn("⚠️ [EXTREME] Critical health! Pausing...")
-                    task.wait(2)
-                    return
+                -- Minimal safety check (only if ExtremeSafeMode is enabled)
+                if Settings.ExtremeSafeMode then
+                    local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
+                    if humanoid and humanoid.Health < 10 then
+                        warn("⚠️ [EXTREME] Critical health! Pausing...")
+                        task.wait(2)
+                        return
+                    end
                 end
                 
                 -- Ultra fast delay
-                local extremeDelay = math.random(50, 150) / 1000
+                local extremeDelay = getExtremeDelay(Settings)
                 
                 local char = player.Character or player.CharacterAdded:Wait()
                 local equippedTool = char:FindFirstChild("!!!EQUIPPED_TOOL!!!")
 
                 if not equippedTool then
-                    EquipRod:FireServer(1)
+                    Remotes.EquipRod:FireServer(1)
                     task.wait(extremeDelay)
                 end
 
                 -- Rapid fire fishing sequence
-                ChargeRod:InvokeServer(workspace:GetServerTimeNow())
+                Remotes.ChargeRod:InvokeServer(workspace:GetServerTimeNow())
                 task.wait(extremeDelay)
                 
-                RequestFishing:InvokeServer(-1.2379989624023438, 0.9800224985802423)
+                Remotes.RequestFishing:InvokeServer(-1.2379989624023438, 0.9800224985802423)
                 task.wait(extremeDelay)
                 
-                FishingComplete:FireServer()
+                Remotes.FishingComplete:FireServer()
                 
                 Stats.fishCaught = Stats.fishCaught + 1
                 
@@ -505,37 +537,39 @@ local function autoFishingExtreme()
     end)
 end
 
-local function autoFishingBrutal()
+local function autoFishingBrutal(Settings)
     task.spawn(function()
         while Settings.AutoFishingBrutal do
             safeCall(function()
-                -- Optional safety check
-                local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
-                if humanoid and humanoid.Health < 10 then
-                    warn("⚠️ [BRUTAL] Critical health! Pausing...")
-                    task.wait(2)
-                    return
+                -- Optional safety check (only if BrutalSafeMode is enabled)
+                if Settings.BrutalSafeMode then
+                    local humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
+                    if humanoid and humanoid.Health < 10 then
+                        warn("⚠️ [BRUTAL] Critical health! Pausing...")
+                        task.wait(2)
+                        return
+                    end
                 end
                 
-                -- Use custom very fast delay
-                local brutalDelay = math.random(10, 50) / 1000
+                -- Use custom user-defined delay
+                local brutalDelay = Settings.BrutalCustomDelay
                 
                 local char = player.Character or player.CharacterAdded:Wait()
                 local equippedTool = char:FindFirstChild("!!!EQUIPPED_TOOL!!!")
 
                 if not equippedTool then
-                    EquipRod:FireServer(1)
+                    Remotes.EquipRod:FireServer(1)
                     task.wait(brutalDelay)
                 end
 
                 -- Ultra custom speed fishing sequence
-                ChargeRod:InvokeServer(workspace:GetServerTimeNow())
+                Remotes.ChargeRod:InvokeServer(workspace:GetServerTimeNow())
                 task.wait(brutalDelay)
                 
-                RequestFishing:InvokeServer(-1.2379989624023438, 0.9800224985802423)
+                Remotes.RequestFishing:InvokeServer(-1.2379989624023438, 0.9800224985802423)
                 task.wait(brutalDelay)
                 
-                FishingComplete:FireServer()
+                Remotes.FishingComplete:FireServer()
                 
                 Stats.fishCaught = Stats.fishCaught + 1
                 
@@ -575,6 +609,23 @@ local Settings = {
     AutoFishingAFK2 = false,
     AutoFishingExtreme = false,
     AutoFishingBrutal = false,
+    
+    -- AFK Mode Settings
+    AFK2_DelayMode = "AFK2", -- "AFK2", "RANDOM", "CUSTOM", "FIXED"
+    AFK2_MinDelay = 0.5,
+    AFK2_MaxDelay = 2.0,
+    AFK2_CustomDelay = 1.0,
+    AFK2_FixedDelay = 1.5,
+    
+    -- Extreme Mode Settings
+    ExtremeSpeed = "MEDIUM", -- "LOW", "MEDIUM", "HIGH", "INSANE"
+    ExtremeDelay = 0.1,
+    ExtremeSafeMode = false,
+    
+    -- Brutal Mode Settings
+    BrutalCustomDelay = 0.01,
+    BrutalSafeMode = false,
+    
     WalkSpeed = 16,
     NoOxygenDamage = false,
     Theme = "Dark",
@@ -857,7 +908,7 @@ local function createCompleteGUI()
     MainFrame.Parent = FrameUtama
     MainFrame.Active = true
     MainFrame.BackgroundTransparency = 1
-    MainFrame.CanvasSize = UDim2.new(0, 0, 0, 500)
+    MainFrame.CanvasSize = UDim2.new(0, 0, 0, 700)
     MainFrame.Position = UDim2.new(0.376, 0, 0.147, 0)
     MainFrame.Size = UDim2.new(0.624, 0, 0.853, 0)
     MainFrame.ZIndex = 2
@@ -921,49 +972,91 @@ local function createCompleteGUI()
     local autoFishWarnaCorner = Instance.new("UICorner")
     autoFishWarnaCorner.Parent = AutoFishWarna
 
-    -- Auto Fish AFK2 Frame
-    local AutoFishAFK2Frame = Instance.new("Frame")
-    AutoFishAFK2Frame.Name = "AutoFishAFK2Frame"
-    AutoFishAFK2Frame.Parent = MainListLayoutFrame
-    AutoFishAFK2Frame.BackgroundColor3 = CONFIG.COLORS.FRAME_BG
-    AutoFishAFK2Frame.BorderSizePixel = 0
-    AutoFishAFK2Frame.Size = UDim2.new(0.898, 0, 0.106, 0)
+    -- AFK Mode Selection Frame
+    local AFKModeFrame = Instance.new("Frame")
+    AFKModeFrame.Name = "AFKModeFrame"
+    AFKModeFrame.Parent = MainListLayoutFrame
+    AFKModeFrame.BackgroundColor3 = CONFIG.COLORS.FRAME_BG
+    AFKModeFrame.BorderSizePixel = 0
+    AFKModeFrame.Size = UDim2.new(0.898, 0, 0.080, 0)
     
-    local autoFishAFK2Corner = Instance.new("UICorner")
-    autoFishAFK2Corner.Parent = AutoFishAFK2Frame
+    local afkModeCorner = Instance.new("UICorner")
+    afkModeCorner.Parent = AFKModeFrame
 
-    local AutoFishAFK2Text = Instance.new("TextLabel")
-    AutoFishAFK2Text.Parent = AutoFishAFK2Frame
-    AutoFishAFK2Text.BackgroundTransparency = 1
-    AutoFishAFK2Text.Position = UDim2.new(0.030, 0, 0.216, 0)
-    AutoFishAFK2Text.Size = UDim2.new(0.415, 0, 0.568, 0)
-    AutoFishAFK2Text.Font = Enum.Font.SourceSansBold
-    AutoFishAFK2Text.Text = "Auto Fish (AFK2) :"
-    AutoFishAFK2Text.TextColor3 = CONFIG.COLORS.TEXT_WHITE
-    AutoFishAFK2Text.TextScaled = true
-    AutoFishAFK2Text.TextXAlignment = Enum.TextXAlignment.Left
+    local AFKModeText = Instance.new("TextLabel")
+    AFKModeText.Parent = AFKModeFrame
+    AFKModeText.BackgroundTransparency = 1
+    AFKModeText.Position = UDim2.new(0.030, 0, 0.200, 0)
+    AFKModeText.Size = UDim2.new(0.200, 0, 0.600, 0)
+    AFKModeText.Font = Enum.Font.SourceSansBold
+    AFKModeText.Text = "Mode:"
+    AFKModeText.TextColor3 = CONFIG.COLORS.TEXT_WHITE
+    AFKModeText.TextScaled = true
+    AFKModeText.TextXAlignment = Enum.TextXAlignment.Left
 
-    local AutoFishAFK2Button = Instance.new("TextButton")
-    AutoFishAFK2Button.Name = "AutoFishAFK2Button"
-    AutoFishAFK2Button.Parent = AutoFishAFK2Frame
-    AutoFishAFK2Button.BackgroundTransparency = 1
-    AutoFishAFK2Button.Position = UDim2.new(0.756, 0, 0.108, 0)
-    AutoFishAFK2Button.Size = UDim2.new(0.150, 0, 0.784, 0)
-    AutoFishAFK2Button.ZIndex = 2
-    AutoFishAFK2Button.Font = Enum.Font.SourceSansBold
-    AutoFishAFK2Button.Text = "OFF"
-    AutoFishAFK2Button.TextColor3 = CONFIG.COLORS.TEXT_WHITE
-    AutoFishAFK2Button.TextScaled = true
-
-    local AutoFishAFK2Warna = Instance.new("Frame")
-    AutoFishAFK2Warna.Parent = AutoFishAFK2Frame
-    AutoFishAFK2Warna.BackgroundColor3 = CONFIG.COLORS.OFF_STATE
-    AutoFishAFK2Warna.BorderSizePixel = 0
-    AutoFishAFK2Warna.Position = UDim2.new(0.756, 0, 0.135, 0)
-    AutoFishAFK2Warna.Size = UDim2.new(0.147, 0, 0.730, 0)
+    -- AFK2 Button
+    local AFK2Button = Instance.new("TextButton")
+    AFK2Button.Name = "AFK2Button"
+    AFK2Button.Parent = AFKModeFrame
+    AFK2Button.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+    AFK2Button.BorderSizePixel = 0
+    AFK2Button.Position = UDim2.new(0.250, 0, 0.150, 0)
+    AFK2Button.Size = UDim2.new(0.120, 0, 0.700, 0)
+    AFK2Button.Font = Enum.Font.SourceSansBold
+    AFK2Button.Text = "AFK2"
+    AFK2Button.TextColor3 = CONFIG.COLORS.TEXT_WHITE
+    AFK2Button.TextScaled = true
     
-    local autoFishAFK2WarnaCorner = Instance.new("UICorner")
-    autoFishAFK2WarnaCorner.Parent = AutoFishAFK2Warna
+    local afk2Corner = Instance.new("UICorner")
+    afk2Corner.Parent = AFK2Button
+
+    -- RANDOM Button
+    local RandomButton = Instance.new("TextButton")
+    RandomButton.Name = "RandomButton"
+    RandomButton.Parent = AFKModeFrame
+    RandomButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+    RandomButton.BorderSizePixel = 0
+    RandomButton.Position = UDim2.new(0.390, 0, 0.150, 0)
+    RandomButton.Size = UDim2.new(0.120, 0, 0.700, 0)
+    RandomButton.Font = Enum.Font.SourceSansBold
+    RandomButton.Text = "RANDOM"
+    RandomButton.TextColor3 = CONFIG.COLORS.TEXT_WHITE
+    RandomButton.TextScaled = true
+    
+    local randomCorner = Instance.new("UICorner")
+    randomCorner.Parent = RandomButton
+
+    -- CUSTOM Button
+    local CustomButton = Instance.new("TextButton")
+    CustomButton.Name = "CustomButton"
+    CustomButton.Parent = AFKModeFrame
+    CustomButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+    CustomButton.BorderSizePixel = 0
+    CustomButton.Position = UDim2.new(0.530, 0, 0.150, 0)
+    CustomButton.Size = UDim2.new(0.120, 0, 0.700, 0)
+    CustomButton.Font = Enum.Font.SourceSansBold
+    CustomButton.Text = "CUSTOM"
+    CustomButton.TextColor3 = CONFIG.COLORS.TEXT_WHITE
+    CustomButton.TextScaled = true
+    
+    local customCorner = Instance.new("UICorner")
+    customCorner.Parent = CustomButton
+
+    -- FIXED Button
+    local FixedButton = Instance.new("TextButton")
+    FixedButton.Name = "FixedButton"
+    FixedButton.Parent = AFKModeFrame
+    FixedButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+    FixedButton.BorderSizePixel = 0
+    FixedButton.Position = UDim2.new(0.670, 0, 0.150, 0)
+    FixedButton.Size = UDim2.new(0.120, 0, 0.700, 0)
+    FixedButton.Font = Enum.Font.SourceSansBold
+    FixedButton.Text = "FIXED"
+    FixedButton.TextColor3 = CONFIG.COLORS.TEXT_WHITE
+    FixedButton.TextScaled = true
+    
+    local fixedCorner = Instance.new("UICorner")
+    fixedCorner.Parent = FixedButton
 
     -- Auto Fish Extreme Frame
     local AutoFishExtremeFrame = Instance.new("Frame")
@@ -1009,6 +1102,92 @@ local function createCompleteGUI()
     local autoFishExtremeWarnaCorner = Instance.new("UICorner")
     autoFishExtremeWarnaCorner.Parent = AutoFishExtremeWarna
 
+    -- Extreme Mode Selection Frame
+    local ExtremeModeFrame = Instance.new("Frame")
+    ExtremeModeFrame.Name = "ExtremeModeFrame"
+    ExtremeModeFrame.Parent = MainListLayoutFrame
+    ExtremeModeFrame.BackgroundColor3 = CONFIG.COLORS.FRAME_BG
+    ExtremeModeFrame.BorderSizePixel = 0
+    ExtremeModeFrame.Size = UDim2.new(0.898, 0, 0.080, 0)
+    
+    local extremeModeCorner = Instance.new("UICorner")
+    extremeModeCorner.Parent = ExtremeModeFrame
+
+    local ExtremeModeText = Instance.new("TextLabel")
+    ExtremeModeText.Parent = ExtremeModeFrame
+    ExtremeModeText.BackgroundTransparency = 1
+    ExtremeModeText.Position = UDim2.new(0.030, 0, 0.200, 0)
+    ExtremeModeText.Size = UDim2.new(0.200, 0, 0.600, 0)
+    ExtremeModeText.Font = Enum.Font.SourceSansBold
+    ExtremeModeText.Text = "Speed:"
+    ExtremeModeText.TextColor3 = CONFIG.COLORS.TEXT_WHITE
+    ExtremeModeText.TextScaled = true
+    ExtremeModeText.TextXAlignment = Enum.TextXAlignment.Left
+
+    -- LOW Button
+    local LowButton = Instance.new("TextButton")
+    LowButton.Name = "LowButton"
+    LowButton.Parent = ExtremeModeFrame
+    LowButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+    LowButton.BorderSizePixel = 0
+    LowButton.Position = UDim2.new(0.250, 0, 0.150, 0)
+    LowButton.Size = UDim2.new(0.120, 0, 0.700, 0)
+    LowButton.Font = Enum.Font.SourceSansBold
+    LowButton.Text = "LOW"
+    LowButton.TextColor3 = CONFIG.COLORS.TEXT_WHITE
+    LowButton.TextScaled = true
+    
+    local lowCorner = Instance.new("UICorner")
+    lowCorner.Parent = LowButton
+
+    -- MEDIUM Button
+    local MediumButton = Instance.new("TextButton")
+    MediumButton.Name = "MediumButton"
+    MediumButton.Parent = ExtremeModeFrame
+    MediumButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+    MediumButton.BorderSizePixel = 0
+    MediumButton.Position = UDim2.new(0.390, 0, 0.150, 0)
+    MediumButton.Size = UDim2.new(0.120, 0, 0.700, 0)
+    MediumButton.Font = Enum.Font.SourceSansBold
+    MediumButton.Text = "MEDIUM"
+    MediumButton.TextColor3 = CONFIG.COLORS.TEXT_WHITE
+    MediumButton.TextScaled = true
+    
+    local mediumCorner = Instance.new("UICorner")
+    mediumCorner.Parent = MediumButton
+
+    -- HIGH Button
+    local HighButton = Instance.new("TextButton")
+    HighButton.Name = "HighButton"
+    HighButton.Parent = ExtremeModeFrame
+    HighButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+    HighButton.BorderSizePixel = 0
+    HighButton.Position = UDim2.new(0.530, 0, 0.150, 0)
+    HighButton.Size = UDim2.new(0.120, 0, 0.700, 0)
+    HighButton.Font = Enum.Font.SourceSansBold
+    HighButton.Text = "HIGH"
+    HighButton.TextColor3 = CONFIG.COLORS.TEXT_WHITE
+    HighButton.TextScaled = true
+    
+    local highCorner = Instance.new("UICorner")
+    highCorner.Parent = HighButton
+
+    -- INSANE Button
+    local InsaneButton = Instance.new("TextButton")
+    InsaneButton.Name = "InsaneButton"
+    InsaneButton.Parent = ExtremeModeFrame
+    InsaneButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+    InsaneButton.BorderSizePixel = 0
+    InsaneButton.Position = UDim2.new(0.670, 0, 0.150, 0)
+    InsaneButton.Size = UDim2.new(0.120, 0, 0.700, 0)
+    InsaneButton.Font = Enum.Font.SourceSansBold
+    InsaneButton.Text = "INSANE"
+    InsaneButton.TextColor3 = CONFIG.COLORS.TEXT_WHITE
+    InsaneButton.TextScaled = true
+    
+    local insaneCorner = Instance.new("UICorner")
+    insaneCorner.Parent = InsaneButton
+
     -- Auto Fish Brutal Frame
     local AutoFishBrutalFrame = Instance.new("Frame")
     AutoFishBrutalFrame.Name = "AutoFishBrutalFrame"
@@ -1052,6 +1231,68 @@ local function createCompleteGUI()
     
     local autoFishBrutalWarnaCorner = Instance.new("UICorner")
     autoFishBrutalWarnaCorner.Parent = AutoFishBrutalWarna
+
+    -- Brutal Custom Delay Frame
+    local BrutalDelayFrame = Instance.new("Frame")
+    BrutalDelayFrame.Name = "BrutalDelayFrame"
+    BrutalDelayFrame.Parent = MainListLayoutFrame
+    BrutalDelayFrame.BackgroundColor3 = CONFIG.COLORS.FRAME_BG
+    BrutalDelayFrame.BorderSizePixel = 0
+    BrutalDelayFrame.Size = UDim2.new(0.898, 0, 0.080, 0)
+    
+    local brutalDelayCorner = Instance.new("UICorner")
+    brutalDelayCorner.Parent = BrutalDelayFrame
+
+    local BrutalDelayText = Instance.new("TextLabel")
+    BrutalDelayText.Parent = BrutalDelayFrame
+    BrutalDelayText.BackgroundTransparency = 1
+    BrutalDelayText.Position = UDim2.new(0.030, 0, 0.200, 0)
+    BrutalDelayText.Size = UDim2.new(0.300, 0, 0.600, 0)
+    BrutalDelayText.Font = Enum.Font.SourceSansBold
+    BrutalDelayText.Text = "Custom Delay (s):"
+    BrutalDelayText.TextColor3 = CONFIG.COLORS.TEXT_WHITE
+    BrutalDelayText.TextScaled = true
+    BrutalDelayText.TextXAlignment = Enum.TextXAlignment.Left
+
+    -- Brutal Delay Input
+    local BrutalDelayInput = Instance.new("TextBox")
+    BrutalDelayInput.Name = "BrutalDelayInput"
+    BrutalDelayInput.Parent = BrutalDelayFrame
+    BrutalDelayInput.BackgroundColor3 = CONFIG.COLORS.OFF_STATE
+    BrutalDelayInput.BorderSizePixel = 0
+    BrutalDelayInput.Position = UDim2.new(0.350, 0, 0.150, 0)
+    BrutalDelayInput.Size = UDim2.new(0.200, 0, 0.700, 0)
+    BrutalDelayInput.Font = Enum.Font.SourceSansBold
+    BrutalDelayInput.Text = "0.01"
+    BrutalDelayInput.TextColor3 = CONFIG.COLORS.TEXT_WHITE
+    BrutalDelayInput.TextScaled = true
+    BrutalDelayInput.PlaceholderText = "0.01"
+    
+    local brutalInputCorner = Instance.new("UICorner")
+    brutalInputCorner.Parent = BrutalDelayInput
+
+    -- Brutal Set Button
+    local BrutalSetButton = Instance.new("TextButton")
+    BrutalSetButton.Name = "BrutalSetButton"
+    BrutalSetButton.Parent = BrutalDelayFrame
+    BrutalSetButton.BackgroundColor3 = CONFIG.COLORS.OFF_STATE
+    BrutalSetButton.BorderSizePixel = 0
+    BrutalSetButton.Position = UDim2.new(0.570, 0, 0.150, 0)
+    BrutalSetButton.Size = UDim2.new(0.150, 0, 0.700, 0)
+    BrutalSetButton.Font = Enum.Font.SourceSansBold
+    BrutalSetButton.Text = "Set"
+    BrutalSetButton.TextColor3 = CONFIG.COLORS.TEXT_WHITE
+    BrutalSetButton.TextScaled = true
+    
+    local brutalSetCorner = Instance.new("UICorner")
+    brutalSetCorner.Parent = BrutalSetButton
+
+    -- Set default button states
+    -- Default AFK Mode: AFK2 (selected)
+    AFK2Button.BackgroundColor3 = CONFIG.COLORS.ACCENT_BLUE
+    
+    -- Default Extreme Speed: MEDIUM (selected)
+    MediumButton.BackgroundColor3 = CONFIG.COLORS.ACCENT_BLUE
 
     -- Sell All Frame
     local SellAllFrame = Instance.new("Frame")
@@ -1815,7 +2056,7 @@ local function createCompleteGUI()
         AutoFishAFK2Button.Text = Settings.AutoFishingAFK2 and "ON" or "OFF"
         AutoFishAFK2Warna.BackgroundColor3 = Settings.AutoFishingAFK2 and CONFIG.COLORS.SUCCESS_GREEN or CONFIG.COLORS.OFF_STATE
         if Settings.AutoFishingAFK2 then
-            autoFishingAFK2()
+            autoFishingAFK2(Settings)
             createNotification("🎣 Auto Fishing AFK2 started!", Color3.fromRGB(0, 150, 255))
         else
             createNotification("🎣 Auto Fishing AFK2 stopped!", Color3.fromRGB(200, 0, 0))
@@ -1827,7 +2068,7 @@ local function createCompleteGUI()
         AutoFishExtremeButton.Text = Settings.AutoFishingExtreme and "ON" or "OFF"
         AutoFishExtremeWarna.BackgroundColor3 = Settings.AutoFishingExtreme and CONFIG.COLORS.SUCCESS_GREEN or CONFIG.COLORS.OFF_STATE
         if Settings.AutoFishingExtreme then
-            autoFishingExtreme()
+            autoFishingExtreme(Settings)
             createNotification("⚡ Auto Fishing EXTREME started!", Color3.fromRGB(255, 165, 0))
         else
             createNotification("⚡ Auto Fishing EXTREME stopped!", Color3.fromRGB(200, 0, 0))
@@ -1839,7 +2080,7 @@ local function createCompleteGUI()
         AutoFishBrutalButton.Text = Settings.AutoFishingBrutal and "ON" or "OFF"
         AutoFishBrutalWarna.BackgroundColor3 = Settings.AutoFishingBrutal and CONFIG.COLORS.SUCCESS_GREEN or CONFIG.COLORS.OFF_STATE
         if Settings.AutoFishingBrutal then
-            autoFishingBrutal()
+            autoFishingBrutal(Settings)
             createNotification("🔥 Auto Fishing BRUTAL started!", Color3.fromRGB(255, 0, 0))
         else
             createNotification("🔥 Auto Fishing BRUTAL stopped!", Color3.fromRGB(200, 0, 0))
@@ -1976,6 +2217,100 @@ local function createCompleteGUI()
             end)
         end
         createNotification("💪 Infinite Stamina " .. (infStaminaEnabled and "enabled" or "disabled"), Color3.fromRGB(255, 255, 0))
+    end)
+
+    -- AFK MODE SELECTION CONNECTIONS
+    connections[#connections + 1] = AFK2Button.MouseButton1Click:Connect(function()
+        Settings.AFK2_DelayMode = "AFK2"
+        -- Update button colors
+        AFK2Button.BackgroundColor3 = CONFIG.COLORS.ACCENT_BLUE
+        RandomButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        CustomButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        FixedButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        createNotification("⚙️ AFK Mode: AFK2", CONFIG.COLORS.SUCCESS_GREEN)
+    end)
+
+    connections[#connections + 1] = RandomButton.MouseButton1Click:Connect(function()
+        Settings.AFK2_DelayMode = "RANDOM"
+        -- Update button colors
+        AFK2Button.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        RandomButton.BackgroundColor3 = CONFIG.COLORS.ACCENT_BLUE
+        CustomButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        FixedButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        createNotification("⚙️ AFK Mode: RANDOM", CONFIG.COLORS.SUCCESS_GREEN)
+    end)
+
+    connections[#connections + 1] = CustomButton.MouseButton1Click:Connect(function()
+        Settings.AFK2_DelayMode = "CUSTOM"
+        -- Update button colors
+        AFK2Button.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        RandomButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        CustomButton.BackgroundColor3 = CONFIG.COLORS.ACCENT_BLUE
+        FixedButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        createNotification("⚙️ AFK Mode: CUSTOM", CONFIG.COLORS.SUCCESS_GREEN)
+    end)
+
+    connections[#connections + 1] = FixedButton.MouseButton1Click:Connect(function()
+        Settings.AFK2_DelayMode = "FIXED"
+        -- Update button colors
+        AFK2Button.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        RandomButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        CustomButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        FixedButton.BackgroundColor3 = CONFIG.COLORS.ACCENT_BLUE
+        createNotification("⚙️ AFK Mode: FIXED", CONFIG.COLORS.SUCCESS_GREEN)
+    end)
+
+    -- EXTREME SPEED SELECTION CONNECTIONS
+    connections[#connections + 1] = LowButton.MouseButton1Click:Connect(function()
+        Settings.ExtremeSpeed = "LOW"
+        -- Update button colors
+        LowButton.BackgroundColor3 = CONFIG.COLORS.ACCENT_BLUE
+        MediumButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        HighButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        InsaneButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        createNotification("⚡ Extreme Speed: LOW", CONFIG.COLORS.SUCCESS_GREEN)
+    end)
+
+    connections[#connections + 1] = MediumButton.MouseButton1Click:Connect(function()
+        Settings.ExtremeSpeed = "MEDIUM"
+        -- Update button colors
+        LowButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        MediumButton.BackgroundColor3 = CONFIG.COLORS.ACCENT_BLUE
+        HighButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        InsaneButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        createNotification("⚡ Extreme Speed: MEDIUM", CONFIG.COLORS.SUCCESS_GREEN)
+    end)
+
+    connections[#connections + 1] = HighButton.MouseButton1Click:Connect(function()
+        Settings.ExtremeSpeed = "HIGH"
+        -- Update button colors
+        LowButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        MediumButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        HighButton.BackgroundColor3 = CONFIG.COLORS.ACCENT_BLUE
+        InsaneButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        createNotification("⚡ Extreme Speed: HIGH", CONFIG.COLORS.SUCCESS_GREEN)
+    end)
+
+    connections[#connections + 1] = InsaneButton.MouseButton1Click:Connect(function()
+        Settings.ExtremeSpeed = "INSANE"
+        -- Update button colors
+        LowButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        MediumButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        HighButton.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
+        InsaneButton.BackgroundColor3 = CONFIG.COLORS.ACCENT_BLUE
+        createNotification("⚡ Extreme Speed: INSANE", CONFIG.COLORS.SUCCESS_GREEN)
+    end)
+
+    -- BRUTAL CUSTOM DELAY CONNECTION
+    connections[#connections + 1] = BrutalSetButton.MouseButton1Click:Connect(function()
+        local delayValue = tonumber(BrutalDelayInput.Text)
+        if delayValue and delayValue > 0 then
+            Settings.BrutalCustomDelay = delayValue
+            createNotification("🔥 Brutal Delay set to: " .. delayValue .. "s", CONFIG.COLORS.SUCCESS_GREEN)
+        else
+            createNotification("❌ Invalid delay value!", CONFIG.COLORS.DANGER_RED)
+            BrutalDelayInput.Text = tostring(Settings.BrutalCustomDelay)
+        end
     end)
 
     -- Update statistics display
