@@ -388,7 +388,7 @@ local Settings = {
 }
 
 -- ===================================================================
---                       GUI CREATION (SIMPLIFIED)
+--                       COMPLETE GUI CREATION
 -- ===================================================================
 local function createCompleteGUI()
     local ZayrosFISHIT = Instance.new("ScreenGui")
@@ -396,6 +396,7 @@ local function createCompleteGUI()
     ZayrosFISHIT.Parent = player:WaitForChild("PlayerGui")
     ZayrosFISHIT.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
+    -- Main Frame
     local FrameUtama = Instance.new("Frame")
     FrameUtama.Name = "FrameUtama"
     FrameUtama.Parent = ZayrosFISHIT
@@ -425,61 +426,363 @@ local function createCompleteGUI()
     exitCorner.CornerRadius = UDim.new(0, 4)
     exitCorner.Parent = ExitBtn
 
-    -- Auto Fish Button
-    local AutoFishButton = Instance.new("TextButton")
-    AutoFishButton.Name = "AutoFishButton"
-    AutoFishButton.Parent = FrameUtama
-    AutoFishButton.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
-    AutoFishButton.BorderSizePixel = 0
-    AutoFishButton.Position = UDim2.new(0.400, 0, 0.200, 0)
-    AutoFishButton.Size = UDim2.new(0.200, 0, 0.100, 0)
-    AutoFishButton.Font = Enum.Font.SourceSansBold
-    AutoFishButton.Text = "Auto Fish: OFF"
-    AutoFishButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    AutoFishButton.TextScaled = true
+    -- Side Bar
+    local SideBar = Instance.new("Frame")
+    SideBar.Name = "SideBar"
+    SideBar.Parent = FrameUtama
+    SideBar.BackgroundColor3 = Color3.fromRGB(83, 83, 83)
+    SideBar.BorderSizePixel = 0
+    SideBar.Size = UDim2.new(0.376, 0, 1, 0)
+    SideBar.ZIndex = 2
+
+    -- Logo
+    local Logo = Instance.new("ImageLabel")
+    Logo.Name = "Logo"
+    Logo.Parent = SideBar
+    Logo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Logo.BorderSizePixel = 0
+    Logo.Position = UDim2.new(0.073, 0, 0.038, 0)
+    Logo.Size = UDim2.new(0.168, 0, 0.088, 0)
+    Logo.ZIndex = 2
+    Logo.Image = CONFIG.LOGO_IMAGE
+    
+    local logoCorner = Instance.new("UICorner")
+    logoCorner.CornerRadius = UDim.new(0, 10)
+    logoCorner.Parent = Logo
+
+    -- Title
+    local TittleSideBar = Instance.new("TextLabel")
+    TittleSideBar.Name = "TittleSideBar"
+    TittleSideBar.Parent = SideBar
+    TittleSideBar.BackgroundTransparency = 1
+    TittleSideBar.Position = UDim2.new(0.309, 0, 0.038, 0)
+    TittleSideBar.Size = UDim2.new(0.654, 0, 0.088, 0)
+    TittleSideBar.ZIndex = 2
+    TittleSideBar.Font = Enum.Font.SourceSansBold
+    TittleSideBar.Text = CONFIG.GUI_TITLE
+    TittleSideBar.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TittleSideBar.TextScaled = true
+    TittleSideBar.TextXAlignment = Enum.TextXAlignment.Left
+
+    -- Line
+    local Line = Instance.new("Frame")
+    Line.Name = "Line"
+    Line.Parent = SideBar
+    Line.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    Line.BorderSizePixel = 0
+    Line.Position = UDim2.new(0, 0, 0.145, 0)
+    Line.Size = UDim2.new(1, 0, 0.003, 0)
+    Line.ZIndex = 2
+
+    -- Menu Container
+    local MainMenuSaidBar = Instance.new("Frame")
+    MainMenuSaidBar.Name = "MainMenuSaidBar"
+    MainMenuSaidBar.Parent = SideBar
+    MainMenuSaidBar.BackgroundTransparency = 1
+    MainMenuSaidBar.Position = UDim2.new(0, 0, 0.165, 0)
+    MainMenuSaidBar.Size = UDim2.new(1, 0, 0.710, 0)
+
+    local UIListLayout = Instance.new("UIListLayout")
+    UIListLayout.Parent = MainMenuSaidBar
+    UIListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    UIListLayout.Padding = UDim.new(0.05, 0)
+
+    -- Menu Buttons
+    local function createMenuButton(name, text)
+        local btn = Instance.new("TextButton")
+        btn.Name = name
+        btn.Parent = MainMenuSaidBar
+        btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        btn.BorderSizePixel = 0
+        btn.Size = UDim2.new(0.916, 0, 0.113, 0)
+        btn.Font = Enum.Font.SourceSansBold
+        btn.Text = text
+        btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        btn.TextScaled = true
+        
+        local corner = Instance.new("UICorner")
+        corner.Parent = btn
+        
+        return btn
+    end
+
+    local MAIN = createMenuButton("MAIN", "MAIN")
+    local Player = createMenuButton("Player", "PLAYER")
+    local SpawnBoat = createMenuButton("SpawnBoat", "SPAWN BOAT")
+    local TELEPORT = createMenuButton("TELEPORT", "TELEPORT")
+    local SECURITY = createMenuButton("SECURITY", "SECURITY")
+    local ADVANCED = createMenuButton("ADVANCED", "ADVANCED")
+
+    -- Credit
+    local Credit = Instance.new("TextLabel")
+    Credit.Name = "Credit"
+    Credit.Parent = SideBar
+    Credit.BackgroundTransparency = 1
+    Credit.Position = UDim2.new(0, 0, 0.875, 0)
+    Credit.Size = UDim2.new(0.998, 0, 0.123, 0)
+    Credit.Font = Enum.Font.SourceSansBold
+    Credit.Text = "Telegram @Spinnerxxx"
+    Credit.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Credit.TextScaled = true
+
+    -- Main content line
+    local Line_2 = Instance.new("Frame")
+    Line_2.Name = "Line"
+    Line_2.Parent = FrameUtama
+    Line_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Line_2.BorderSizePixel = 0
+    Line_2.Position = UDim2.new(0.376, 0, 0.145, 0)
+    Line_2.Size = UDim2.new(0.624, 0, 0.003, 0)
+    Line_2.ZIndex = 2
+
+    -- Title for current page
+    local Tittle = Instance.new("TextLabel")
+    Tittle.Name = "Tittle"
+    Tittle.Parent = FrameUtama
+    Tittle.BackgroundTransparency = 1
+    Tittle.Position = UDim2.new(0.420, 0, 0.038, 0)
+    Tittle.Size = UDim2.new(0.444, 0, 0.088, 0)
+    Tittle.ZIndex = 2
+    Tittle.Font = Enum.Font.SourceSansBold
+    Tittle.Text = "MAIN"
+    Tittle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Tittle.TextScaled = true
+
+    -- ===============================================================
+    --                         MAIN FRAME
+    -- ===============================================================
+    local MainFrame = Instance.new("ScrollingFrame")
+    MainFrame.Name = "MainFrame"
+    MainFrame.Parent = FrameUtama
+    MainFrame.Active = true
+    MainFrame.BackgroundTransparency = 1
+    MainFrame.Position = UDim2.new(0.376, 0, 0.147, 0)
+    MainFrame.Size = UDim2.new(0.624, 0, 0.853, 0)
+    MainFrame.ZIndex = 2
+    MainFrame.ScrollBarThickness = 6
+
+    local MainListLayoutFrame = Instance.new("Frame")
+    MainListLayoutFrame.Name = "MainListLayoutFrame"
+    MainListLayoutFrame.Parent = MainFrame
+    MainListLayoutFrame.BackgroundTransparency = 1
+    MainListLayoutFrame.Position = UDim2.new(0, 0, 0.022, 0)
+    MainListLayoutFrame.Size = UDim2.new(1, 0, 1, 0)
+
+    local ListLayoutMain = Instance.new("UIListLayout")
+    ListLayoutMain.Name = "ListLayoutMain"
+    ListLayoutMain.Parent = MainListLayoutFrame
+    ListLayoutMain.HorizontalAlignment = Enum.HorizontalAlignment.Center
+    ListLayoutMain.SortOrder = Enum.SortOrder.LayoutOrder
+    ListLayoutMain.Padding = UDim.new(0, 8)
+
+    -- Auto Fish Frame
+    local AutoFishFrame = Instance.new("Frame")
+    AutoFishFrame.Name = "AutoFishFrame"
+    AutoFishFrame.Parent = MainListLayoutFrame
+    AutoFishFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    AutoFishFrame.BorderSizePixel = 0
+    AutoFishFrame.Size = UDim2.new(0.898, 0, 0.106, 0)
     
     local autoFishCorner = Instance.new("UICorner")
-    autoFishCorner.Parent = AutoFishButton
+    autoFishCorner.Parent = AutoFishFrame
 
-    -- Sell All Button
-    local SellAllButton = Instance.new("TextButton")
-    SellAllButton.Name = "SellAllButton"
-    SellAllButton.Parent = FrameUtama
-    SellAllButton.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
-    SellAllButton.BorderSizePixel = 0
-    SellAllButton.Position = UDim2.new(0.400, 0, 0.320, 0)
-    SellAllButton.Size = UDim2.new(0.200, 0, 0.100, 0)
-    SellAllButton.Font = Enum.Font.SourceSansBold
-    SellAllButton.Text = "Sell All"
-    SellAllButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    SellAllButton.TextScaled = true
+    local AutoFishText = Instance.new("TextLabel")
+    AutoFishText.Parent = AutoFishFrame
+    AutoFishText.BackgroundTransparency = 1
+    AutoFishText.Position = UDim2.new(0.030, 0, 0.216, 0)
+    AutoFishText.Size = UDim2.new(0.415, 0, 0.568, 0)
+    AutoFishText.Font = Enum.Font.SourceSansBold
+    AutoFishText.Text = "Auto Fish (AFK) :"
+    AutoFishText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoFishText.TextScaled = true
+    AutoFishText.TextXAlignment = Enum.TextXAlignment.Left
+
+    local AutoFishButton = Instance.new("TextButton")
+    AutoFishButton.Name = "AutoFishButton"
+    AutoFishButton.Parent = AutoFishFrame
+    AutoFishButton.BackgroundTransparency = 1
+    AutoFishButton.Position = UDim2.new(0.756, 0, 0.108, 0)
+    AutoFishButton.Size = UDim2.new(0.207, 0, 0.784, 0)
+    AutoFishButton.ZIndex = 2
+    AutoFishButton.Font = Enum.Font.SourceSansBold
+    AutoFishButton.Text = "OFF"
+    AutoFishButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoFishButton.TextScaled = true
+
+    local AutoFishWarna = Instance.new("Frame")
+    AutoFishWarna.Parent = AutoFishFrame
+    AutoFishWarna.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    AutoFishWarna.BorderSizePixel = 0
+    AutoFishWarna.Position = UDim2.new(0.756, 0, 0.135, 0)
+    AutoFishWarna.Size = UDim2.new(0.204, 0, 0.730, 0)
+    
+    local autoFishWarnaCorner = Instance.new("UICorner")
+    autoFishWarnaCorner.Parent = AutoFishWarna
+
+    -- Sell All Frame
+    local SellAllFrame = Instance.new("Frame")
+    SellAllFrame.Name = "SellAllFrame"
+    SellAllFrame.Parent = MainListLayoutFrame
+    SellAllFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    SellAllFrame.BorderSizePixel = 0
+    SellAllFrame.Size = UDim2.new(0.898, 0, 0.106, 0)
     
     local sellAllCorner = Instance.new("UICorner")
-    sellAllCorner.Parent = SellAllButton
+    sellAllCorner.Parent = SellAllFrame
 
-    -- Stats Display
+    local SellAllButton = Instance.new("TextButton")
+    SellAllButton.Name = "SellAllButton"
+    SellAllButton.Parent = SellAllFrame
+    SellAllButton.BackgroundTransparency = 1
+    SellAllButton.Size = UDim2.new(1, 0, 1, 0)
+    SellAllButton.ZIndex = 2
+    SellAllButton.Font = Enum.Font.SourceSansBold
+    SellAllButton.Text = ""
+
+    local SellAllText = Instance.new("TextLabel")
+    SellAllText.Parent = SellAllFrame
+    SellAllText.BackgroundTransparency = 1
+    SellAllText.Position = UDim2.new(0.290, 0, 0.216, 0)
+    SellAllText.Size = UDim2.new(0.415, 0, 0.568, 0)
+    SellAllText.Font = Enum.Font.SourceSansBold
+    SellAllText.Text = "Sell All"
+    SellAllText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    SellAllText.TextScaled = true
+
+    -- Statistics Frame
+    local StatsFrame = Instance.new("Frame")
+    StatsFrame.Name = "StatsFrame"
+    StatsFrame.Parent = MainListLayoutFrame
+    StatsFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    StatsFrame.BorderSizePixel = 0
+    StatsFrame.Size = UDim2.new(0.898, 0, 0.106, 0)
+    
+    local statsCorner = Instance.new("UICorner")
+    statsCorner.Parent = StatsFrame
+
     local StatsText = Instance.new("TextLabel")
-    StatsText.Name = "StatsText"
-    StatsText.Parent = FrameUtama
+    StatsText.Parent = StatsFrame
     StatsText.BackgroundTransparency = 1
-    StatsText.Position = UDim2.new(0.400, 0, 0.450, 0)
-    StatsText.Size = UDim2.new(0.580, 0, 0.100, 0)
+    StatsText.Position = UDim2.new(0.030, 0, 0.216, 0)
+    StatsText.Size = UDim2.new(0.940, 0, 0.568, 0)
     StatsText.Font = Enum.Font.SourceSansBold
-    StatsText.Text = "🐟 Fish: 0 | 💰 Money: ₡0"
+    StatsText.Text = "🐟 Fish: 0 | Session: 0m | 🍀 Luck: Lv1"
     StatsText.TextColor3 = Color3.fromRGB(255, 255, 255)
     StatsText.TextScaled = true
 
-    -- Title
-    local Title = Instance.new("TextLabel")
-    Title.Name = "Title"
-    Title.Parent = FrameUtama
-    Title.BackgroundTransparency = 1
-    Title.Position = UDim2.new(0.400, 0, 0.050, 0)
-    Title.Size = UDim2.new(0.580, 0, 0.100, 0)
-    Title.Font = Enum.Font.SourceSansBold
-    Title.Text = CONFIG.GUI_TITLE .. " V2.0 (Modular)"
-    Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-    Title.TextScaled = true
+    -- Weather Frame
+    local WeatherFrame = Instance.new("Frame")
+    WeatherFrame.Name = "WeatherFrame"
+    WeatherFrame.Parent = MainListLayoutFrame
+    WeatherFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    WeatherFrame.BorderSizePixel = 0
+    WeatherFrame.Size = UDim2.new(0.898, 0, 0.106, 0)
+    
+    local weatherCorner = Instance.new("UICorner")
+    weatherCorner.Parent = WeatherFrame
+
+    local WeatherText = Instance.new("TextLabel")
+    WeatherText.Parent = WeatherFrame
+    WeatherText.BackgroundTransparency = 1
+    WeatherText.Position = UDim2.new(0.030, 0, 0.216, 0)
+    WeatherText.Size = UDim2.new(0.940, 0, 0.568, 0)
+    WeatherText.Font = Enum.Font.SourceSansBold
+    WeatherText.Text = "☀️ Sunny | Perfect fishing weather!"
+    WeatherText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    WeatherText.TextScaled = true
+
+    -- Create other page frames (initially hidden)
+    local PlayerFrame = Instance.new("Frame")
+    PlayerFrame.Name = "PlayerFrame"
+    PlayerFrame.Parent = FrameUtama
+    PlayerFrame.BackgroundTransparency = 1
+    PlayerFrame.Position = UDim2.new(0.376, 0, 0.147, 0)
+    PlayerFrame.Size = UDim2.new(0.624, 0, 0.853, 0)
+    PlayerFrame.Visible = false
+    
+    local SpawnBoatFrame = Instance.new("Frame")
+    SpawnBoatFrame.Name = "SpawnBoatFrame"
+    SpawnBoatFrame.Parent = FrameUtama
+    SpawnBoatFrame.BackgroundTransparency = 1
+    SpawnBoatFrame.Position = UDim2.new(0.376, 0, 0.147, 0)
+    SpawnBoatFrame.Size = UDim2.new(0.624, 0, 0.853, 0)
+    SpawnBoatFrame.Visible = false
+    
+    local TeleportFrame = Instance.new("Frame")
+    TeleportFrame.Name = "TeleportFrame"
+    TeleportFrame.Parent = FrameUtama
+    TeleportFrame.BackgroundTransparency = 1
+    TeleportFrame.Position = UDim2.new(0.376, 0, 0.147, 0)
+    TeleportFrame.Size = UDim2.new(0.624, 0, 0.853, 0)
+    TeleportFrame.Visible = false
+    
+    local SecurityFrame = Instance.new("Frame")
+    SecurityFrame.Name = "SecurityFrame"
+    SecurityFrame.Parent = FrameUtama
+    SecurityFrame.BackgroundTransparency = 1
+    SecurityFrame.Position = UDim2.new(0.376, 0, 0.147, 0)
+    SecurityFrame.Size = UDim2.new(0.624, 0, 0.853, 0)
+    SecurityFrame.Visible = false
+    
+    local AdvancedFrame = Instance.new("Frame")
+    AdvancedFrame.Name = "AdvancedFrame"
+    AdvancedFrame.Parent = FrameUtama
+    AdvancedFrame.BackgroundTransparency = 1
+    AdvancedFrame.Position = UDim2.new(0.376, 0, 0.147, 0)
+    AdvancedFrame.Size = UDim2.new(0.624, 0, 0.853, 0)
+    AdvancedFrame.Visible = false
+
+    -- Page switching function
+    local function showPanel(pageName)
+        MainFrame.Visible = false
+        PlayerFrame.Visible = false
+        SpawnBoatFrame.Visible = false
+        TeleportFrame.Visible = false
+        SecurityFrame.Visible = false
+        AdvancedFrame.Visible = false
+        
+        if pageName == "Main" then
+            MainFrame.Visible = true
+        elseif pageName == "Player" then
+            PlayerFrame.Visible = true
+        elseif pageName == "Boat" then
+            SpawnBoatFrame.Visible = true
+        elseif pageName == "Teleport" then
+            TeleportFrame.Visible = true
+        elseif pageName == "Security" then
+            SecurityFrame.Visible = true
+        elseif pageName == "Advanced" then
+            AdvancedFrame.Visible = true
+        end
+        
+        Tittle.Text = pageName:upper()
+    end
+
+    -- Menu button connections
+    connections[#connections + 1] = MAIN.MouseButton1Click:Connect(function()
+        showPanel("Main")
+    end)
+
+    connections[#connections + 1] = Player.MouseButton1Click:Connect(function()
+        showPanel("Player")
+    end)
+
+    connections[#connections + 1] = SpawnBoat.MouseButton1Click:Connect(function()
+        showPanel("Boat")
+    end)
+
+    connections[#connections + 1] = TELEPORT.MouseButton1Click:Connect(function()
+        showPanel("Teleport")
+    end)
+
+    connections[#connections + 1] = SECURITY.MouseButton1Click:Connect(function()
+        showPanel("Security")
+    end)
+
+    connections[#connections + 1] = ADVANCED.MouseButton1Click:Connect(function()
+        showPanel("Advanced")
+    end)
 
     -- ===================================================================
     --                      BUTTON CONNECTIONS
@@ -496,8 +799,8 @@ local function createCompleteGUI()
 
     connections[#connections + 1] = AutoFishButton.MouseButton1Click:Connect(function()
         Settings.AutoFishing = not Settings.AutoFishing
-        AutoFishButton.Text = Settings.AutoFishing and "Auto Fish: ON" or "Auto Fish: OFF"
-        AutoFishButton.BackgroundColor3 = Settings.AutoFishing and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(47, 47, 47)
+        AutoFishButton.Text = Settings.AutoFishing and "ON" or "OFF"
+        AutoFishWarna.BackgroundColor3 = Settings.AutoFishing and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(0, 0, 0)
         if Settings.AutoFishing then
             enhancedAutoFishing(Settings)
             createNotification("🎣 Auto Fishing started!", Color3.fromRGB(0, 200, 0))
@@ -516,8 +819,8 @@ local function createCompleteGUI()
     -- Update statistics display
     connections[#connections + 1] = RunService.Heartbeat:Connect(function()
         local sessionTime = math.floor((tick() - Stats.sessionStartTime) / 60)
-        StatsText.Text = string.format("🐟 Fish: %d | 💰 Money: ₡%d | ⏰ %dm", 
-            Stats.fishCaught, Stats.moneyEarned, sessionTime)
+        StatsText.Text = string.format("🐟 Fish: %d | Session: %dm | 🍀 Luck: Lv1", 
+            Stats.fishCaught, sessionTime)
     end)
 
     -- Make GUI draggable
