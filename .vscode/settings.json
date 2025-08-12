@@ -1,0 +1,12 @@
+{
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 1000,
+    "git.enableSmartCommit": true,
+    "git.autofetch": true,
+    "git.autofetchPeriod": 60,
+    "git.confirmSync": false,
+    "git.enableStatusBarSync": true,
+    "workbench.settings.editor": "json",
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "editor.formatOnSave": true
+}
