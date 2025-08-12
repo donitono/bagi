@@ -25,6 +25,22 @@ local CONFIG = {
         MIN = 0.5,
         MAX = 2.0,
         CUSTOM = 1.0
+    },
+    -- DARK BLUE THEME COLORS
+    COLORS = {
+        MAIN_BG = Color3.fromRGB(15, 25, 45),        -- Dark Navy Blue
+        SIDEBAR_BG = Color3.fromRGB(20, 35, 60),     -- Medium Navy Blue  
+        FRAME_BG = Color3.fromRGB(25, 40, 70),       -- Lighter Navy Blue
+        BUTTON_BG = Color3.fromRGB(30, 50, 90),      -- Button Blue
+        BUTTON_HOVER = Color3.fromRGB(40, 65, 110),  -- Button Hover
+        ACCENT_BLUE = Color3.fromRGB(0, 120, 255),   -- Bright Blue Accent
+        SUCCESS_GREEN = Color3.fromRGB(0, 200, 100), -- Success Green
+        DANGER_RED = Color3.fromRGB(220, 40, 34),    -- Danger Red
+        WARNING_ORANGE = Color3.fromRGB(255, 165, 0), -- Warning Orange
+        TEXT_WHITE = Color3.fromRGB(255, 255, 255),  -- White Text
+        TEXT_GRAY = Color3.fromRGB(200, 200, 200),   -- Gray Text
+        BORDER_BLUE = Color3.fromRGB(50, 100, 180),  -- Border Blue
+        OFF_STATE = Color3.fromRGB(10, 15, 25)       -- OFF Button State
     }
 }
 
@@ -592,7 +608,7 @@ local function toggleGUI()
         if floatingButton then
             if guiVisible then
                 floatingButton.Text = "🎣"
-                floatingButton.BackgroundColor3 = Color3.fromRGB(0, 162, 255)
+                floatingButton.BackgroundColor3 = CONFIG.COLORS.ACCENT_BLUE
                 createNotification("🎣 GUI Opened", Color3.fromRGB(0, 255, 0))
             else
                 floatingButton.Text = "👁️"
@@ -615,7 +631,7 @@ local function createFloatingToggleButton()
     local FloatingButton = Instance.new("TextButton")
     FloatingButton.Name = "FloatingToggle"
     FloatingButton.Parent = FloatingGui
-    FloatingButton.BackgroundColor3 = Color3.fromRGB(0, 162, 255)
+    FloatingButton.BackgroundColor3 = CONFIG.COLORS.ACCENT_BLUE
     FloatingButton.BorderSizePixel = 0
     FloatingButton.Position = UDim2.new(0.02, 0, 0.5, -25)
     FloatingButton.Size = UDim2.new(0, 50, 0, 50)
@@ -679,8 +695,8 @@ local function createCompleteGUI()
     local FrameUtama = Instance.new("Frame")
     FrameUtama.Name = "FrameUtama"
     FrameUtama.Parent = ZayrosFISHIT
-    FrameUtama.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-    FrameUtama.BackgroundTransparency = 0.200
+    FrameUtama.BackgroundColor3 = CONFIG.COLORS.MAIN_BG
+    FrameUtama.BackgroundTransparency = 0.100
     FrameUtama.BorderSizePixel = 0
     FrameUtama.Position = UDim2.new(0.264, 0, 0.174, 0)
     FrameUtama.Size = UDim2.new(0.542, 0, 0.650, 0)
@@ -692,13 +708,13 @@ local function createCompleteGUI()
     local ExitBtn = Instance.new("TextButton")
     ExitBtn.Name = "ExitBtn"
     ExitBtn.Parent = FrameUtama
-    ExitBtn.BackgroundColor3 = Color3.fromRGB(220, 40, 34)
+    ExitBtn.BackgroundColor3 = CONFIG.COLORS.DANGER_RED
     ExitBtn.BorderSizePixel = 0
     ExitBtn.Position = UDim2.new(0.901, 0, 0.038, 0)
     ExitBtn.Size = UDim2.new(0.063, 0, 0.088, 0)
     ExitBtn.Font = Enum.Font.SourceSansBold
     ExitBtn.Text = "X"
-    ExitBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    ExitBtn.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     ExitBtn.TextScaled = true
     
     local exitCorner = Instance.new("UICorner")
@@ -709,7 +725,7 @@ local function createCompleteGUI()
     local SideBar = Instance.new("Frame")
     SideBar.Name = "SideBar"
     SideBar.Parent = FrameUtama
-    SideBar.BackgroundColor3 = Color3.fromRGB(83, 83, 83)
+    SideBar.BackgroundColor3 = CONFIG.COLORS.SIDEBAR_BG
     SideBar.BorderSizePixel = 0
     SideBar.Size = UDim2.new(0.376, 0, 1, 0)
     SideBar.ZIndex = 2
@@ -718,7 +734,7 @@ local function createCompleteGUI()
     local Logo = Instance.new("ImageLabel")
     Logo.Name = "Logo"
     Logo.Parent = SideBar
-    Logo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Logo.BackgroundColor3 = CONFIG.COLORS.TEXT_WHITE
     Logo.BorderSizePixel = 0
     Logo.Position = UDim2.new(0.073, 0, 0.038, 0)
     Logo.Size = UDim2.new(0.168, 0, 0.088, 0)
@@ -739,7 +755,7 @@ local function createCompleteGUI()
     TittleSideBar.ZIndex = 2
     TittleSideBar.Font = Enum.Font.SourceSansBold
     TittleSideBar.Text = CONFIG.GUI_TITLE
-    TittleSideBar.TextColor3 = Color3.fromRGB(255, 255, 255)
+    TittleSideBar.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     TittleSideBar.TextScaled = true
     TittleSideBar.TextXAlignment = Enum.TextXAlignment.Left
 
@@ -747,7 +763,7 @@ local function createCompleteGUI()
     local Line = Instance.new("Frame")
     Line.Name = "Line"
     Line.Parent = SideBar
-    Line.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    Line.BackgroundColor3 = CONFIG.COLORS.BORDER_BLUE
     Line.BorderSizePixel = 0
     Line.Position = UDim2.new(0, 0, 0.145, 0)
     Line.Size = UDim2.new(1, 0, 0.003, 0)
@@ -772,12 +788,12 @@ local function createCompleteGUI()
         local btn = Instance.new("TextButton")
         btn.Name = name
         btn.Parent = MainMenuSaidBar
-        btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        btn.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
         btn.BorderSizePixel = 0
         btn.Size = UDim2.new(0.916, 0, 0.113, 0)
         btn.Font = Enum.Font.SourceSansBold
         btn.Text = text
-        btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        btn.TextColor3 = CONFIG.COLORS.TEXT_WHITE
         btn.TextScaled = true
         
         local corner = Instance.new("UICorner")
@@ -809,7 +825,7 @@ local function createCompleteGUI()
     local Line_2 = Instance.new("Frame")
     Line_2.Name = "Line"
     Line_2.Parent = FrameUtama
-    Line_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Line_2.BackgroundColor3 = CONFIG.COLORS.BORDER_BLUE
     Line_2.BorderSizePixel = 0
     Line_2.Position = UDim2.new(0.376, 0, 0.145, 0)
     Line_2.Size = UDim2.new(0.624, 0, 0.003, 0)
@@ -859,7 +875,7 @@ local function createCompleteGUI()
     local AutoFishFrame = Instance.new("Frame")
     AutoFishFrame.Name = "AutoFishFrame"
     AutoFishFrame.Parent = MainListLayoutFrame
-    AutoFishFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    AutoFishFrame.BackgroundColor3 = CONFIG.COLORS.FRAME_BG
     AutoFishFrame.BorderSizePixel = 0
     AutoFishFrame.Size = UDim2.new(0.898, 0, 0.106, 0)
     
@@ -891,7 +907,7 @@ local function createCompleteGUI()
 
     local AutoFishWarna = Instance.new("Frame")
     AutoFishWarna.Parent = AutoFishFrame
-    AutoFishWarna.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    AutoFishWarna.BackgroundColor3 = CONFIG.COLORS.OFF_STATE
     AutoFishWarna.BorderSizePixel = 0
     AutoFishWarna.Position = UDim2.new(0.756, 0, 0.135, 0)
     AutoFishWarna.Size = UDim2.new(0.204, 0, 0.730, 0)
@@ -903,7 +919,7 @@ local function createCompleteGUI()
     local AutoFishAFK2Frame = Instance.new("Frame")
     AutoFishAFK2Frame.Name = "AutoFishAFK2Frame"
     AutoFishAFK2Frame.Parent = MainListLayoutFrame
-    AutoFishAFK2Frame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    AutoFishAFK2Frame.BackgroundColor3 = CONFIG.COLORS.FRAME_BG
     AutoFishAFK2Frame.BorderSizePixel = 0
     AutoFishAFK2Frame.Size = UDim2.new(0.898, 0, 0.106, 0)
     
@@ -917,7 +933,7 @@ local function createCompleteGUI()
     AutoFishAFK2Text.Size = UDim2.new(0.415, 0, 0.568, 0)
     AutoFishAFK2Text.Font = Enum.Font.SourceSansBold
     AutoFishAFK2Text.Text = "Auto Fish (AFK2) :"
-    AutoFishAFK2Text.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoFishAFK2Text.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     AutoFishAFK2Text.TextScaled = true
     AutoFishAFK2Text.TextXAlignment = Enum.TextXAlignment.Left
 
@@ -930,12 +946,12 @@ local function createCompleteGUI()
     AutoFishAFK2Button.ZIndex = 2
     AutoFishAFK2Button.Font = Enum.Font.SourceSansBold
     AutoFishAFK2Button.Text = "OFF"
-    AutoFishAFK2Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoFishAFK2Button.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     AutoFishAFK2Button.TextScaled = true
 
     local AutoFishAFK2Warna = Instance.new("Frame")
     AutoFishAFK2Warna.Parent = AutoFishAFK2Frame
-    AutoFishAFK2Warna.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    AutoFishAFK2Warna.BackgroundColor3 = CONFIG.COLORS.OFF_STATE
     AutoFishAFK2Warna.BorderSizePixel = 0
     AutoFishAFK2Warna.Position = UDim2.new(0.756, 0, 0.135, 0)
     AutoFishAFK2Warna.Size = UDim2.new(0.204, 0, 0.730, 0)
@@ -947,7 +963,7 @@ local function createCompleteGUI()
     local AutoFishExtremeFrame = Instance.new("Frame")
     AutoFishExtremeFrame.Name = "AutoFishExtremeFrame"
     AutoFishExtremeFrame.Parent = MainListLayoutFrame
-    AutoFishExtremeFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    AutoFishExtremeFrame.BackgroundColor3 = CONFIG.COLORS.FRAME_BG
     AutoFishExtremeFrame.BorderSizePixel = 0
     AutoFishExtremeFrame.Size = UDim2.new(0.898, 0, 0.106, 0)
     
@@ -979,7 +995,7 @@ local function createCompleteGUI()
 
     local AutoFishExtremeWarna = Instance.new("Frame")
     AutoFishExtremeWarna.Parent = AutoFishExtremeFrame
-    AutoFishExtremeWarna.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    AutoFishExtremeWarna.BackgroundColor3 = CONFIG.COLORS.OFF_STATE
     AutoFishExtremeWarna.BorderSizePixel = 0
     AutoFishExtremeWarna.Position = UDim2.new(0.756, 0, 0.135, 0)
     AutoFishExtremeWarna.Size = UDim2.new(0.204, 0, 0.730, 0)
@@ -991,7 +1007,7 @@ local function createCompleteGUI()
     local AutoFishBrutalFrame = Instance.new("Frame")
     AutoFishBrutalFrame.Name = "AutoFishBrutalFrame"
     AutoFishBrutalFrame.Parent = MainListLayoutFrame
-    AutoFishBrutalFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    AutoFishBrutalFrame.BackgroundColor3 = CONFIG.COLORS.FRAME_BG
     AutoFishBrutalFrame.BorderSizePixel = 0
     AutoFishBrutalFrame.Size = UDim2.new(0.898, 0, 0.106, 0)
     
@@ -1023,7 +1039,7 @@ local function createCompleteGUI()
 
     local AutoFishBrutalWarna = Instance.new("Frame")
     AutoFishBrutalWarna.Parent = AutoFishBrutalFrame
-    AutoFishBrutalWarna.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    AutoFishBrutalWarna.BackgroundColor3 = CONFIG.COLORS.OFF_STATE
     AutoFishBrutalWarna.BorderSizePixel = 0
     AutoFishBrutalWarna.Position = UDim2.new(0.756, 0, 0.135, 0)
     AutoFishBrutalWarna.Size = UDim2.new(0.204, 0, 0.730, 0)
@@ -1035,7 +1051,7 @@ local function createCompleteGUI()
     local SellAllFrame = Instance.new("Frame")
     SellAllFrame.Name = "SellAllFrame"
     SellAllFrame.Parent = MainListLayoutFrame
-    SellAllFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    SellAllFrame.BackgroundColor3 = CONFIG.COLORS.FRAME_BG
     SellAllFrame.BorderSizePixel = 0
     SellAllFrame.Size = UDim2.new(0.898, 0, 0.106, 0)
     
@@ -1065,7 +1081,7 @@ local function createCompleteGUI()
     local StatsFrame = Instance.new("Frame")
     StatsFrame.Name = "StatsFrame"
     StatsFrame.Parent = MainListLayoutFrame
-    StatsFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    StatsFrame.BackgroundColor3 = CONFIG.COLORS.FRAME_BG
     StatsFrame.BorderSizePixel = 0
     StatsFrame.Size = UDim2.new(0.898, 0, 0.106, 0)
     
@@ -1779,7 +1795,7 @@ local function createCompleteGUI()
     connections[#connections + 1] = AutoFishButton.MouseButton1Click:Connect(function()
         Settings.AutoFishing = not Settings.AutoFishing
         AutoFishButton.Text = Settings.AutoFishing and "ON" or "OFF"
-        AutoFishWarna.BackgroundColor3 = Settings.AutoFishing and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(0, 0, 0)
+        AutoFishWarna.BackgroundColor3 = Settings.AutoFishing and CONFIG.COLORS.SUCCESS_GREEN or CONFIG.COLORS.OFF_STATE
         if Settings.AutoFishing then
             enhancedAutoFishing(Settings)
             createNotification("🎣 Auto Fishing started!", Color3.fromRGB(0, 200, 0))
@@ -1791,7 +1807,7 @@ local function createCompleteGUI()
     connections[#connections + 1] = AutoFishAFK2Button.MouseButton1Click:Connect(function()
         Settings.AutoFishingAFK2 = not Settings.AutoFishingAFK2
         AutoFishAFK2Button.Text = Settings.AutoFishingAFK2 and "ON" or "OFF"
-        AutoFishAFK2Warna.BackgroundColor3 = Settings.AutoFishingAFK2 and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(0, 0, 0)
+        AutoFishAFK2Warna.BackgroundColor3 = Settings.AutoFishingAFK2 and CONFIG.COLORS.SUCCESS_GREEN or CONFIG.COLORS.OFF_STATE
         if Settings.AutoFishingAFK2 then
             autoFishingAFK2()
             createNotification("🎣 Auto Fishing AFK2 started!", Color3.fromRGB(0, 150, 255))
@@ -1803,7 +1819,7 @@ local function createCompleteGUI()
     connections[#connections + 1] = AutoFishExtremeButton.MouseButton1Click:Connect(function()
         Settings.AutoFishingExtreme = not Settings.AutoFishingExtreme
         AutoFishExtremeButton.Text = Settings.AutoFishingExtreme and "ON" or "OFF"
-        AutoFishExtremeWarna.BackgroundColor3 = Settings.AutoFishingExtreme and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(0, 0, 0)
+        AutoFishExtremeWarna.BackgroundColor3 = Settings.AutoFishingExtreme and CONFIG.COLORS.SUCCESS_GREEN or CONFIG.COLORS.OFF_STATE
         if Settings.AutoFishingExtreme then
             autoFishingExtreme()
             createNotification("⚡ Auto Fishing EXTREME started!", Color3.fromRGB(255, 165, 0))
@@ -1815,7 +1831,7 @@ local function createCompleteGUI()
     connections[#connections + 1] = AutoFishBrutalButton.MouseButton1Click:Connect(function()
         Settings.AutoFishingBrutal = not Settings.AutoFishingBrutal
         AutoFishBrutalButton.Text = Settings.AutoFishingBrutal and "ON" or "OFF"
-        AutoFishBrutalWarna.BackgroundColor3 = Settings.AutoFishingBrutal and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(0, 0, 0)
+        AutoFishBrutalWarna.BackgroundColor3 = Settings.AutoFishingBrutal and CONFIG.COLORS.SUCCESS_GREEN or CONFIG.COLORS.OFF_STATE
         if Settings.AutoFishingBrutal then
             autoFishingBrutal()
             createNotification("🔥 Auto Fishing BRUTAL started!", Color3.fromRGB(255, 0, 0))
