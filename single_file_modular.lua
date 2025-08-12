@@ -857,6 +857,7 @@ local function createCompleteGUI()
     MainFrame.Parent = FrameUtama
     MainFrame.Active = true
     MainFrame.BackgroundTransparency = 1
+    MainFrame.CanvasSize = UDim2.new(0, 0, 0, 500)
     MainFrame.Position = UDim2.new(0.376, 0, 0.147, 0)
     MainFrame.Size = UDim2.new(0.624, 0, 0.853, 0)
     MainFrame.ZIndex = 2
@@ -903,7 +904,7 @@ local function createCompleteGUI()
     AutoFishButton.Parent = AutoFishFrame
     AutoFishButton.BackgroundTransparency = 1
     AutoFishButton.Position = UDim2.new(0.756, 0, 0.108, 0)
-    AutoFishButton.Size = UDim2.new(0.207, 0, 0.784, 0)
+    AutoFishButton.Size = UDim2.new(0.150, 0, 0.784, 0)
     AutoFishButton.ZIndex = 2
     AutoFishButton.Font = Enum.Font.SourceSansBold
     AutoFishButton.Text = "OFF"
@@ -915,7 +916,7 @@ local function createCompleteGUI()
     AutoFishWarna.BackgroundColor3 = CONFIG.COLORS.OFF_STATE
     AutoFishWarna.BorderSizePixel = 0
     AutoFishWarna.Position = UDim2.new(0.756, 0, 0.135, 0)
-    AutoFishWarna.Size = UDim2.new(0.204, 0, 0.730, 0)
+    AutoFishWarna.Size = UDim2.new(0.147, 0, 0.730, 0)
     
     local autoFishWarnaCorner = Instance.new("UICorner")
     autoFishWarnaCorner.Parent = AutoFishWarna
@@ -947,7 +948,7 @@ local function createCompleteGUI()
     AutoFishAFK2Button.Parent = AutoFishAFK2Frame
     AutoFishAFK2Button.BackgroundTransparency = 1
     AutoFishAFK2Button.Position = UDim2.new(0.756, 0, 0.108, 0)
-    AutoFishAFK2Button.Size = UDim2.new(0.207, 0, 0.784, 0)
+    AutoFishAFK2Button.Size = UDim2.new(0.150, 0, 0.784, 0)
     AutoFishAFK2Button.ZIndex = 2
     AutoFishAFK2Button.Font = Enum.Font.SourceSansBold
     AutoFishAFK2Button.Text = "OFF"
@@ -959,7 +960,7 @@ local function createCompleteGUI()
     AutoFishAFK2Warna.BackgroundColor3 = CONFIG.COLORS.OFF_STATE
     AutoFishAFK2Warna.BorderSizePixel = 0
     AutoFishAFK2Warna.Position = UDim2.new(0.756, 0, 0.135, 0)
-    AutoFishAFK2Warna.Size = UDim2.new(0.204, 0, 0.730, 0)
+    AutoFishAFK2Warna.Size = UDim2.new(0.147, 0, 0.730, 0)
     
     local autoFishAFK2WarnaCorner = Instance.new("UICorner")
     autoFishAFK2WarnaCorner.Parent = AutoFishAFK2Warna
@@ -991,7 +992,7 @@ local function createCompleteGUI()
     AutoFishExtremeButton.Parent = AutoFishExtremeFrame
     AutoFishExtremeButton.BackgroundTransparency = 1
     AutoFishExtremeButton.Position = UDim2.new(0.756, 0, 0.108, 0)
-    AutoFishExtremeButton.Size = UDim2.new(0.207, 0, 0.784, 0)
+    AutoFishExtremeButton.Size = UDim2.new(0.150, 0, 0.784, 0)
     AutoFishExtremeButton.ZIndex = 2
     AutoFishExtremeButton.Font = Enum.Font.SourceSansBold
     AutoFishExtremeButton.Text = "OFF"
@@ -1003,7 +1004,7 @@ local function createCompleteGUI()
     AutoFishExtremeWarna.BackgroundColor3 = CONFIG.COLORS.OFF_STATE
     AutoFishExtremeWarna.BorderSizePixel = 0
     AutoFishExtremeWarna.Position = UDim2.new(0.756, 0, 0.135, 0)
-    AutoFishExtremeWarna.Size = UDim2.new(0.204, 0, 0.730, 0)
+    AutoFishExtremeWarna.Size = UDim2.new(0.147, 0, 0.730, 0)
     
     local autoFishExtremeWarnaCorner = Instance.new("UICorner")
     autoFishExtremeWarnaCorner.Parent = AutoFishExtremeWarna
@@ -1035,7 +1036,7 @@ local function createCompleteGUI()
     AutoFishBrutalButton.Parent = AutoFishBrutalFrame
     AutoFishBrutalButton.BackgroundTransparency = 1
     AutoFishBrutalButton.Position = UDim2.new(0.756, 0, 0.108, 0)
-    AutoFishBrutalButton.Size = UDim2.new(0.207, 0, 0.784, 0)
+    AutoFishBrutalButton.Size = UDim2.new(0.150, 0, 0.784, 0)
     AutoFishBrutalButton.ZIndex = 2
     AutoFishBrutalButton.Font = Enum.Font.SourceSansBold
     AutoFishBrutalButton.Text = "OFF"
@@ -1047,7 +1048,7 @@ local function createCompleteGUI()
     AutoFishBrutalWarna.BackgroundColor3 = CONFIG.COLORS.OFF_STATE
     AutoFishBrutalWarna.BorderSizePixel = 0
     AutoFishBrutalWarna.Position = UDim2.new(0.756, 0, 0.135, 0)
-    AutoFishBrutalWarna.Size = UDim2.new(0.204, 0, 0.730, 0)
+    AutoFishBrutalWarna.Size = UDim2.new(0.147, 0, 0.730, 0)
     
     local autoFishBrutalWarnaCorner = Instance.new("UICorner")
     autoFishBrutalWarnaCorner.Parent = AutoFishBrutalWarna
