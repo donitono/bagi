@@ -600,21 +600,26 @@ local floatingButton = nil
 local guiVisible = true
 
 local function toggleGUI()
-    if mainGui then
+    if mainGui and mainGui.Parent then
         guiVisible = not guiVisible
         mainGui.Enabled = guiVisible
         
         -- Update floating button appearance
-        if floatingButton then
+        if floatingButton and floatingButton.Parent then
             if guiVisible then
                 floatingButton.Text = "🎣"
                 floatingButton.BackgroundColor3 = CONFIG.COLORS.ACCENT_BLUE
-                createNotification("🎣 GUI Opened", Color3.fromRGB(0, 255, 0))
+                createNotification("🎣 GUI Opened", CONFIG.COLORS.SUCCESS_GREEN)
             else
                 floatingButton.Text = "👁️"
                 floatingButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-                createNotification("👁️ GUI Hidden", Color3.fromRGB(255, 165, 0))
+                createNotification("👁️ GUI Hidden", CONFIG.COLORS.WARNING_ORANGE)
             end
+        end
+    else
+        -- GUI doesn't exist, show restart message
+        if floatingButton and floatingButton.Parent then
+            createNotification("⚠️ Script needs restart - Run script again", CONFIG.COLORS.DANGER_RED)
         end
     end
 end
@@ -625,7 +630,7 @@ local function createFloatingToggleButton()
     FloatingGui.Name = "FloatingToggle"
     FloatingGui.Parent = player:WaitForChild("PlayerGui")
     FloatingGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-    FloatingGui.ResetOnSpawn = false
+    FloatingGui.ResetOnSpawn = true  -- Change to true so it resets on respawn
     
     -- Floating Toggle Button
     local FloatingButton = Instance.new("TextButton")
@@ -2054,10 +2059,52 @@ local function createCompleteGUI()
     return ZayrosFISHIT
 end
 
+-- Cleanup function
+local function cleanupScript()
+    -- Disconnect all connections
+    for _, connection in pairs(connections) do
+        if connection and connection.Connected then
+            connection:Disconnect()
+        end
+    end
+    connections = {}
+    
+    -- Clean up GUI elements
+    if mainGui then
+        mainGui:Destroy()
+        mainGui = nil
+    end
+    
+    if floatingButton and floatingButton.Parent then
+        floatingButton.Parent:Destroy()
+        floatingButton = nil
+    end
+    
+    -- Reset global variables
+    guiVisible = true
+    
+    print("🧹 Script cleaned up successfully")
+end
+
+-- Check if script is already running
+local function checkExistingScript()
+    local existingGui = player.PlayerGui:FindFirstChild(CONFIG.GUI_NAME)
+    local existingFloating = player.PlayerGui:FindFirstChild("FloatingToggle")
+    
+    if existingGui or existingFloating then
+        if existingGui then existingGui:Destroy() end
+        if existingFloating then existingFloating:Destroy() end
+        warn("🔄 Previous script instance detected and removed")
+        task.wait(0.5) -- Brief wait for cleanup
+    end
+end
 -- ===================================================================
 --                           INITIALIZATION
 -- ===================================================================
 local function initialize()
+    -- Check and cleanup any existing script instances
+    checkExistingScript()
+    
     loadSettings()
     
     -- Create floating toggle button and store in global variable
@@ -2081,17 +2128,29 @@ local function initialize()
     antiAFK()
     initializeSecurity()
     
+    -- Character respawn detection and cleanup
     connections[#connections + 1] = player.CharacterAdded:Connect(function()
+        -- Clean up and restart script after respawn
+        warn("🔄 Character respawned - Script will restart for safety")
+        task.wait(2) -- Wait for character to fully load
+        
+        cleanupScript()
+        
+        -- Show restart notification
+        createNotification("🔄 Script restarting due to respawn...", CONFIG.COLORS.WARNING_ORANGE)
+        
         task.wait(1)
-        setWalkSpeed(Settings.WalkSpeed)
-        setJumpPower(Settings.JumpPower)
+        
+        -- Restart the script
+        initialize()
     end)
     
     print("✅ " .. CONFIG.GUI_TITLE .. " V2.0 (Single File Modular) loaded successfully!")
-    print("🎯 Simplified GUI with essential features")
+    print("🎯 Dark Blue Theme with Auto-Restart on Respawn")
     print("📦 Ready for loadstring(game:HttpGet())")
-    print("🎮 Features: Auto Fish, Sell All, Stats Display")
+    print("🎮 Features: Auto Fish (4 modes), Sell All, Stats Display")
     print("🔧 Hotkey: F9 to hide/show GUI")
+    print("🔄 Auto-restarts safely on character respawn")
 end
 
 initialize()
