@@ -693,45 +693,607 @@ local function createCompleteGUI()
     WeatherText.TextScaled = true
 
     -- Create other page frames (initially hidden)
-    local PlayerFrame = Instance.new("Frame")
+    local PlayerFrame = Instance.new("ScrollingFrame")
     PlayerFrame.Name = "PlayerFrame"
     PlayerFrame.Parent = FrameUtama
+    PlayerFrame.Active = true
     PlayerFrame.BackgroundTransparency = 1
     PlayerFrame.Position = UDim2.new(0.376, 0, 0.147, 0)
     PlayerFrame.Size = UDim2.new(0.624, 0, 0.853, 0)
     PlayerFrame.Visible = false
+    PlayerFrame.ScrollBarThickness = 6
+
+    -- Player Frame Content
+    local PlayerListFrame = Instance.new("Frame")
+    PlayerListFrame.Name = "PlayerListFrame"
+    PlayerListFrame.Parent = PlayerFrame
+    PlayerListFrame.BackgroundTransparency = 1
+    PlayerListFrame.Position = UDim2.new(0, 0, 0.022, 0)
+    PlayerListFrame.Size = UDim2.new(1, 0, 2, 0)
+
+    local PlayerListLayout = Instance.new("UIListLayout")
+    PlayerListLayout.Parent = PlayerListFrame
+    PlayerListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+    PlayerListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    PlayerListLayout.Padding = UDim.new(0, 8)
+
+    -- Walkspeed Frame
+    local WalkspeedFrame = Instance.new("Frame")
+    WalkspeedFrame.Parent = PlayerListFrame
+    WalkspeedFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    WalkspeedFrame.BorderSizePixel = 0
+    WalkspeedFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
+    local walkCorner = Instance.new("UICorner")
+    walkCorner.Parent = WalkspeedFrame
+
+    local WalkspeedText = Instance.new("TextLabel")
+    WalkspeedText.Parent = WalkspeedFrame
+    WalkspeedText.BackgroundTransparency = 1
+    WalkspeedText.Position = UDim2.new(0.030, 0, 0.216, 0)
+    WalkspeedText.Size = UDim2.new(0.415, 0, 0.568, 0)
+    WalkspeedText.Font = Enum.Font.SourceSansBold
+    WalkspeedText.Text = "Walkspeed:"
+    WalkspeedText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    WalkspeedText.TextScaled = true
+    WalkspeedText.TextXAlignment = Enum.TextXAlignment.Left
+
+    local WalkspeedInput = Instance.new("TextBox")
+    WalkspeedInput.Parent = WalkspeedFrame
+    WalkspeedInput.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    WalkspeedInput.BorderSizePixel = 0
+    WalkspeedInput.Position = UDim2.new(0.500, 0, 0.135, 0)
+    WalkspeedInput.Size = UDim2.new(0.150, 0, 0.730, 0)
+    WalkspeedInput.Font = Enum.Font.SourceSansBold
+    WalkspeedInput.Text = "16"
+    WalkspeedInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+    WalkspeedInput.TextScaled = true
+    local walkInputCorner = Instance.new("UICorner")
+    walkInputCorner.Parent = WalkspeedInput
+
+    local WalkspeedBtn = Instance.new("TextButton")
+    WalkspeedBtn.Parent = WalkspeedFrame
+    WalkspeedBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    WalkspeedBtn.BorderSizePixel = 0
+    WalkspeedBtn.Position = UDim2.new(0.680, 0, 0.135, 0)
+    WalkspeedBtn.Size = UDim2.new(0.100, 0, 0.730, 0)
+    WalkspeedBtn.Font = Enum.Font.SourceSansBold
+    WalkspeedBtn.Text = "Set"
+    WalkspeedBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    WalkspeedBtn.TextScaled = true
+    local walkBtnCorner = Instance.new("UICorner")
+    walkBtnCorner.Parent = WalkspeedBtn
+
+    -- Jumppower Frame
+    local JumppowerFrame = Instance.new("Frame")
+    JumppowerFrame.Parent = PlayerListFrame
+    JumppowerFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    JumppowerFrame.BorderSizePixel = 0
+    JumppowerFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
+    local jumpCorner = Instance.new("UICorner")
+    jumpCorner.Parent = JumppowerFrame
+
+    local JumppowerText = Instance.new("TextLabel")
+    JumppowerText.Parent = JumppowerFrame
+    JumppowerText.BackgroundTransparency = 1
+    JumppowerText.Position = UDim2.new(0.030, 0, 0.216, 0)
+    JumppowerText.Size = UDim2.new(0.415, 0, 0.568, 0)
+    JumppowerText.Font = Enum.Font.SourceSansBold
+    JumppowerText.Text = "Jumppower:"
+    JumppowerText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    JumppowerText.TextScaled = true
+    JumppowerText.TextXAlignment = Enum.TextXAlignment.Left
+
+    local JumppowerInput = Instance.new("TextBox")
+    JumppowerInput.Parent = JumppowerFrame
+    JumppowerInput.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    JumppowerInput.BorderSizePixel = 0
+    JumppowerInput.Position = UDim2.new(0.500, 0, 0.135, 0)
+    JumppowerInput.Size = UDim2.new(0.150, 0, 0.730, 0)
+    JumppowerInput.Font = Enum.Font.SourceSansBold
+    JumppowerInput.Text = "50"
+    JumppowerInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+    JumppowerInput.TextScaled = true
+    local jumpInputCorner = Instance.new("UICorner")
+    jumpInputCorner.Parent = JumppowerInput
+
+    local JumppowerBtn = Instance.new("TextButton")
+    JumppowerBtn.Parent = JumppowerFrame
+    JumppowerBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    JumppowerBtn.BorderSizePixel = 0
+    JumppowerBtn.Position = UDim2.new(0.680, 0, 0.135, 0)
+    JumppowerBtn.Size = UDim2.new(0.100, 0, 0.730, 0)
+    JumppowerBtn.Font = Enum.Font.SourceSansBold
+    JumppowerBtn.Text = "Set"
+    JumppowerBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    JumppowerBtn.TextScaled = true
+    local jumpBtnCorner = Instance.new("UICorner")
+    jumpBtnCorner.Parent = JumppowerBtn
+
+    -- Noclip Frame
+    local NoclipFrame = Instance.new("Frame")
+    NoclipFrame.Parent = PlayerListFrame
+    NoclipFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    NoclipFrame.BorderSizePixel = 0
+    NoclipFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
+    local noclipCorner = Instance.new("UICorner")
+    noclipCorner.Parent = NoclipFrame
+
+    local NoclipText = Instance.new("TextLabel")
+    NoclipText.Parent = NoclipFrame
+    NoclipText.BackgroundTransparency = 1
+    NoclipText.Position = UDim2.new(0.030, 0, 0.216, 0)
+    NoclipText.Size = UDim2.new(0.415, 0, 0.568, 0)
+    NoclipText.Font = Enum.Font.SourceSansBold
+    NoclipText.Text = "Noclip:"
+    NoclipText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    NoclipText.TextScaled = true
+    NoclipText.TextXAlignment = Enum.TextXAlignment.Left
+
+    local NoclipBtn = Instance.new("TextButton")
+    NoclipBtn.Parent = NoclipFrame
+    NoclipBtn.BackgroundTransparency = 1
+    NoclipBtn.Position = UDim2.new(0.756, 0, 0.108, 0)
+    NoclipBtn.Size = UDim2.new(0.207, 0, 0.784, 0)
+    NoclipBtn.Font = Enum.Font.SourceSansBold
+    NoclipBtn.Text = "OFF"
+    NoclipBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    NoclipBtn.TextScaled = true
+
+    local NoclipWarna = Instance.new("Frame")
+    NoclipWarna.Parent = NoclipFrame
+    NoclipWarna.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    NoclipWarna.BorderSizePixel = 0
+    NoclipWarna.Position = UDim2.new(0.756, 0, 0.135, 0)
+    NoclipWarna.Size = UDim2.new(0.204, 0, 0.730, 0)
+    local noclipWarnaCorner = Instance.new("UICorner")
+    noclipWarnaCorner.Parent = NoclipWarna
+
+    -- Fly Frame
+    local FlyFrame = Instance.new("Frame")
+    FlyFrame.Parent = PlayerListFrame
+    FlyFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    FlyFrame.BorderSizePixel = 0
+    FlyFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
+    local flyCorner = Instance.new("UICorner")
+    flyCorner.Parent = FlyFrame
+
+    local FlyText = Instance.new("TextLabel")
+    FlyText.Parent = FlyFrame
+    FlyText.BackgroundTransparency = 1
+    FlyText.Position = UDim2.new(0.030, 0, 0.216, 0)
+    FlyText.Size = UDim2.new(0.415, 0, 0.568, 0)
+    FlyText.Font = Enum.Font.SourceSansBold
+    FlyText.Text = "Fly (E to toggle):"
+    FlyText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    FlyText.TextScaled = true
+    FlyText.TextXAlignment = Enum.TextXAlignment.Left
+
+    local FlyBtn = Instance.new("TextButton")
+    FlyBtn.Parent = FlyFrame
+    FlyBtn.BackgroundTransparency = 1
+    FlyBtn.Position = UDim2.new(0.756, 0, 0.108, 0)
+    FlyBtn.Size = UDim2.new(0.207, 0, 0.784, 0)
+    FlyBtn.Font = Enum.Font.SourceSansBold
+    FlyBtn.Text = "OFF"
+    FlyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    FlyBtn.TextScaled = true
+
+    local FlyWarna = Instance.new("Frame")
+    FlyWarna.Parent = FlyFrame
+    FlyWarna.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    FlyWarna.BorderSizePixel = 0
+    FlyWarna.Position = UDim2.new(0.756, 0, 0.135, 0)
+    FlyWarna.Size = UDim2.new(0.204, 0, 0.730, 0)
+    local flyWarnaCorner = Instance.new("UICorner")
+    flyWarnaCorner.Parent = FlyWarna
     
-    local SpawnBoatFrame = Instance.new("Frame")
+    local SpawnBoatFrame = Instance.new("ScrollingFrame")
     SpawnBoatFrame.Name = "SpawnBoatFrame"
     SpawnBoatFrame.Parent = FrameUtama
+    SpawnBoatFrame.Active = true
     SpawnBoatFrame.BackgroundTransparency = 1
     SpawnBoatFrame.Position = UDim2.new(0.376, 0, 0.147, 0)
     SpawnBoatFrame.Size = UDim2.new(0.624, 0, 0.853, 0)
     SpawnBoatFrame.Visible = false
+    SpawnBoatFrame.ScrollBarThickness = 6
+
+    -- Boat Frame Content
+    local BoatListFrame = Instance.new("Frame")
+    BoatListFrame.Name = "BoatListFrame"
+    BoatListFrame.Parent = SpawnBoatFrame
+    BoatListFrame.BackgroundTransparency = 1
+    BoatListFrame.Position = UDim2.new(0, 0, 0.022, 0)
+    BoatListFrame.Size = UDim2.new(1, 0, 2, 0)
+
+    local BoatListLayout = Instance.new("UIListLayout")
+    BoatListLayout.Parent = BoatListFrame
+    BoatListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+    BoatListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    BoatListLayout.Padding = UDim.new(0, 8)
+
+    -- Boat options
+    local boats = {"wooden_boat", "metal_boat", "yacht", "luxury_yacht", "fishing_boat"}
+    for i, boatName in ipairs(boats) do
+        local BoatFrame = Instance.new("Frame")
+        BoatFrame.Parent = BoatListFrame
+        BoatFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+        BoatFrame.BorderSizePixel = 0
+        BoatFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
+        local boatCorner = Instance.new("UICorner")
+        boatCorner.Parent = BoatFrame
+
+        local BoatBtn = Instance.new("TextButton")
+        BoatBtn.Parent = BoatFrame
+        BoatBtn.BackgroundTransparency = 1
+        BoatBtn.Size = UDim2.new(1, 0, 1, 0)
+        BoatBtn.Font = Enum.Font.SourceSansBold
+        BoatBtn.Text = "Spawn " .. boatName:gsub("_", " "):gsub("(%a)([%w_']*)", function(first, rest) return first:upper()..rest:lower() end)
+        BoatBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        BoatBtn.TextScaled = true
+
+        -- Boat spawn connection
+        connections[#connections + 1] = BoatBtn.MouseButton1Click:Connect(function()
+            safeCall(function()
+                local remotes = ReplicatedStorage:WaitForChild("events")
+                if remotes:FindFirstChild("dock_boat") then
+                    remotes.dock_boat:InvokeServer(boatName)
+                    createNotification("🛥️ " .. boatName:gsub("_", " ") .. " spawned!", Color3.fromRGB(0, 162, 255))
+                end
+            end)
+        end)
+    end
     
-    local TeleportFrame = Instance.new("Frame")
+    local TeleportFrame = Instance.new("ScrollingFrame")
     TeleportFrame.Name = "TeleportFrame"
     TeleportFrame.Parent = FrameUtama
+    TeleportFrame.Active = true
     TeleportFrame.BackgroundTransparency = 1
     TeleportFrame.Position = UDim2.new(0.376, 0, 0.147, 0)
     TeleportFrame.Size = UDim2.new(0.624, 0, 0.853, 0)
     TeleportFrame.Visible = false
+    TeleportFrame.ScrollBarThickness = 6
+
+    -- Teleport Frame Content
+    local TeleportListFrame = Instance.new("Frame")
+    TeleportListFrame.Name = "TeleportListFrame"
+    TeleportListFrame.Parent = TeleportFrame
+    TeleportListFrame.BackgroundTransparency = 1
+    TeleportListFrame.Position = UDim2.new(0, 0, 0.022, 0)
+    TeleportListFrame.Size = UDim2.new(1, 0, 2, 0)
+
+    local TeleportListLayout = Instance.new("UIListLayout")
+    TeleportListLayout.Parent = TeleportListFrame
+    TeleportListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+    TeleportListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    TeleportListLayout.Padding = UDim.new(0, 8)
+
+    -- Teleport locations
+    local teleportLocations = {
+        {name = "🏪 Shop", pos = Vector3.new(-39, 10, -921)},
+        {name = "🎣 Fishing Spot 1", pos = Vector3.new(-100, 10, -800)},
+        {name = "🌊 Deep Sea", pos = Vector3.new(-500, 10, -1500)},
+        {name = "🏝️ Island", pos = Vector3.new(200, 10, 300)},
+        {name = "🏠 Spawn", pos = Vector3.new(0, 10, 0)},
+        {name = "⛵ Dock", pos = Vector3.new(-50, 10, -950)}
+    }
+
+    for i, location in ipairs(teleportLocations) do
+        local TpFrame = Instance.new("Frame")
+        TpFrame.Parent = TeleportListFrame
+        TpFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+        TpFrame.BorderSizePixel = 0
+        TpFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
+        local tpCorner = Instance.new("UICorner")
+        tpCorner.Parent = TpFrame
+
+        local TpBtn = Instance.new("TextButton")
+        TpBtn.Parent = TpFrame
+        TpBtn.BackgroundTransparency = 1
+        TpBtn.Size = UDim2.new(1, 0, 1, 0)
+        TpBtn.Font = Enum.Font.SourceSansBold
+        TpBtn.Text = location.name
+        TpBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        TpBtn.TextScaled = true
+
+        -- Teleport connection
+        connections[#connections + 1] = TpBtn.MouseButton1Click:Connect(function()
+            safeCall(function()
+                if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                    player.Character.HumanoidRootPart.CFrame = CFrame.new(location.pos)
+                    createNotification("📍 Teleported to " .. location.name, Color3.fromRGB(128, 0, 255))
+                end
+            end)
+        end)
+    end
     
-    local SecurityFrame = Instance.new("Frame")
+    local SecurityFrame = Instance.new("ScrollingFrame")
     SecurityFrame.Name = "SecurityFrame"
     SecurityFrame.Parent = FrameUtama
+    SecurityFrame.Active = true
     SecurityFrame.BackgroundTransparency = 1
     SecurityFrame.Position = UDim2.new(0.376, 0, 0.147, 0)
     SecurityFrame.Size = UDim2.new(0.624, 0, 0.853, 0)
     SecurityFrame.Visible = false
+    SecurityFrame.ScrollBarThickness = 6
+
+    -- Security Frame Content
+    local SecurityListFrame = Instance.new("Frame")
+    SecurityListFrame.Name = "SecurityListFrame"
+    SecurityListFrame.Parent = SecurityFrame
+    SecurityListFrame.BackgroundTransparency = 1
+    SecurityListFrame.Position = UDim2.new(0, 0, 0.022, 0)
+    SecurityListFrame.Size = UDim2.new(1, 0, 2, 0)
+
+    local SecurityListLayout = Instance.new("UIListLayout")
+    SecurityListLayout.Parent = SecurityListFrame
+    SecurityListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+    SecurityListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    SecurityListLayout.Padding = UDim.new(0, 8)
+
+    -- Anti AFK
+    local AntiAFKFrame = Instance.new("Frame")
+    AntiAFKFrame.Parent = SecurityListFrame
+    AntiAFKFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    AntiAFKFrame.BorderSizePixel = 0
+    AntiAFKFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
+    local antiAfkCorner = Instance.new("UICorner")
+    antiAfkCorner.Parent = AntiAFKFrame
+
+    local AntiAFKText = Instance.new("TextLabel")
+    AntiAFKText.Parent = AntiAFKFrame
+    AntiAFKText.BackgroundTransparency = 1
+    AntiAFKText.Position = UDim2.new(0.030, 0, 0.216, 0)
+    AntiAFKText.Size = UDim2.new(0.415, 0, 0.568, 0)
+    AntiAFKText.Font = Enum.Font.SourceSansBold
+    AntiAFKText.Text = "Anti AFK:"
+    AntiAFKText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AntiAFKText.TextScaled = true
+    AntiAFKText.TextXAlignment = Enum.TextXAlignment.Left
+
+    local AntiAFKBtn = Instance.new("TextButton")
+    AntiAFKBtn.Parent = AntiAFKFrame
+    AntiAFKBtn.BackgroundTransparency = 1
+    AntiAFKBtn.Position = UDim2.new(0.756, 0, 0.108, 0)
+    AntiAFKBtn.Size = UDim2.new(0.207, 0, 0.784, 0)
+    AntiAFKBtn.Font = Enum.Font.SourceSansBold
+    AntiAFKBtn.Text = "ON"
+    AntiAFKBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AntiAFKBtn.TextScaled = true
+
+    local AntiAFKWarna = Instance.new("Frame")
+    AntiAFKWarna.Parent = AntiAFKFrame
+    AntiAFKWarna.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+    AntiAFKWarna.BorderSizePixel = 0
+    AntiAFKWarna.Position = UDim2.new(0.756, 0, 0.135, 0)
+    AntiAFKWarna.Size = UDim2.new(0.204, 0, 0.730, 0)
+    local antiAfkWarnaCorner = Instance.new("UICorner")
+    antiAfkWarnaCorner.Parent = AntiAFKWarna
+
+    -- Player Detection
+    local PlayerDetectionFrame = Instance.new("Frame")
+    PlayerDetectionFrame.Parent = SecurityListFrame
+    PlayerDetectionFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    PlayerDetectionFrame.BorderSizePixel = 0
+    PlayerDetectionFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
+    local playerDetectCorner = Instance.new("UICorner")
+    playerDetectCorner.Parent = PlayerDetectionFrame
+
+    local PlayerDetectionText = Instance.new("TextLabel")
+    PlayerDetectionText.Parent = PlayerDetectionFrame
+    PlayerDetectionText.BackgroundTransparency = 1
+    PlayerDetectionText.Position = UDim2.new(0.030, 0, 0.216, 0)
+    PlayerDetectionText.Size = UDim2.new(0.415, 0, 0.568, 0)
+    PlayerDetectionText.Font = Enum.Font.SourceSansBold
+    PlayerDetectionText.Text = "Player Detection:"
+    PlayerDetectionText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    PlayerDetectionText.TextScaled = true
+    PlayerDetectionText.TextXAlignment = Enum.TextXAlignment.Left
+
+    local PlayerDetectionBtn = Instance.new("TextButton")
+    PlayerDetectionBtn.Parent = PlayerDetectionFrame
+    PlayerDetectionBtn.BackgroundTransparency = 1
+    PlayerDetectionBtn.Position = UDim2.new(0.756, 0, 0.108, 0)
+    PlayerDetectionBtn.Size = UDim2.new(0.207, 0, 0.784, 0)
+    PlayerDetectionBtn.Font = Enum.Font.SourceSansBold
+    PlayerDetectionBtn.Text = "ON"
+    PlayerDetectionBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    PlayerDetectionBtn.TextScaled = true
+
+    local PlayerDetectionWarna = Instance.new("Frame")
+    PlayerDetectionWarna.Parent = PlayerDetectionFrame
+    PlayerDetectionWarna.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+    PlayerDetectionWarna.BorderSizePixel = 0
+    PlayerDetectionWarna.Position = UDim2.new(0.756, 0, 0.135, 0)
+    PlayerDetectionWarna.Size = UDim2.new(0.204, 0, 0.730, 0)
+    local playerDetectWarnaCorner = Instance.new("UICorner")
+    playerDetectWarnaCorner.Parent = PlayerDetectionWarna
+
+    -- Auto Hide GUI
+    local AutoHideFrame = Instance.new("Frame")
+    AutoHideFrame.Parent = SecurityListFrame
+    AutoHideFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    AutoHideFrame.BorderSizePixel = 0
+    AutoHideFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
+    local autoHideCorner = Instance.new("UICorner")
+    autoHideCorner.Parent = AutoHideFrame
+
+    local AutoHideText = Instance.new("TextLabel")
+    AutoHideText.Parent = AutoHideFrame
+    AutoHideText.BackgroundTransparency = 1
+    AutoHideText.Position = UDim2.new(0.030, 0, 0.216, 0)
+    AutoHideText.Size = UDim2.new(0.415, 0, 0.568, 0)
+    AutoHideText.Font = Enum.Font.SourceSansBold
+    AutoHideText.Text = "Auto Hide GUI:"
+    AutoHideText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoHideText.TextScaled = true
+    AutoHideText.TextXAlignment = Enum.TextXAlignment.Left
+
+    local AutoHideBtn = Instance.new("TextButton")
+    AutoHideBtn.Parent = AutoHideFrame
+    AutoHideBtn.BackgroundTransparency = 1
+    AutoHideBtn.Position = UDim2.new(0.756, 0, 0.108, 0)
+    AutoHideBtn.Size = UDim2.new(0.207, 0, 0.784, 0)
+    AutoHideBtn.Font = Enum.Font.SourceSansBold
+    AutoHideBtn.Text = "OFF"
+    AutoHideBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoHideBtn.TextScaled = true
+
+    local AutoHideWarna = Instance.new("Frame")
+    AutoHideWarna.Parent = AutoHideFrame
+    AutoHideWarna.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    AutoHideWarna.BorderSizePixel = 0
+    AutoHideWarna.Position = UDim2.new(0.756, 0, 0.135, 0)
+    AutoHideWarna.Size = UDim2.new(0.204, 0, 0.730, 0)
+    local autoHideWarnaCorner = Instance.new("UICorner")
+    autoHideWarnaCorner.Parent = AutoHideWarna
     
-    local AdvancedFrame = Instance.new("Frame")
+    local AdvancedFrame = Instance.new("ScrollingFrame")
     AdvancedFrame.Name = "AdvancedFrame"
     AdvancedFrame.Parent = FrameUtama
+    AdvancedFrame.Active = true
     AdvancedFrame.BackgroundTransparency = 1
     AdvancedFrame.Position = UDim2.new(0.376, 0, 0.147, 0)
     AdvancedFrame.Size = UDim2.new(0.624, 0, 0.853, 0)
     AdvancedFrame.Visible = false
+    AdvancedFrame.ScrollBarThickness = 6
+
+    -- Advanced Frame Content
+    local AdvancedListFrame = Instance.new("Frame")
+    AdvancedListFrame.Name = "AdvancedListFrame"
+    AdvancedListFrame.Parent = AdvancedFrame
+    AdvancedListFrame.BackgroundTransparency = 1
+    AdvancedListFrame.Position = UDim2.new(0, 0, 0.022, 0)
+    AdvancedListFrame.Size = UDim2.new(1, 0, 2, 0)
+
+    local AdvancedListLayout = Instance.new("UIListLayout")
+    AdvancedListLayout.Parent = AdvancedListFrame
+    AdvancedListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
+    AdvancedListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    AdvancedListLayout.Padding = UDim.new(0, 8)
+
+    -- Auto Sell Rare
+    local AutoSellRareFrame = Instance.new("Frame")
+    AutoSellRareFrame.Parent = AdvancedListFrame
+    AutoSellRareFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    AutoSellRareFrame.BorderSizePixel = 0
+    AutoSellRareFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
+    local autoSellRareCorner = Instance.new("UICorner")
+    autoSellRareCorner.Parent = AutoSellRareFrame
+
+    local AutoSellRareText = Instance.new("TextLabel")
+    AutoSellRareText.Parent = AutoSellRareFrame
+    AutoSellRareText.BackgroundTransparency = 1
+    AutoSellRareText.Position = UDim2.new(0.030, 0, 0.216, 0)
+    AutoSellRareText.Size = UDim2.new(0.415, 0, 0.568, 0)
+    AutoSellRareText.Font = Enum.Font.SourceSansBold
+    AutoSellRareText.Text = "Auto Sell Rare:"
+    AutoSellRareText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoSellRareText.TextScaled = true
+    AutoSellRareText.TextXAlignment = Enum.TextXAlignment.Left
+
+    local AutoSellRareBtn = Instance.new("TextButton")
+    AutoSellRareBtn.Parent = AutoSellRareFrame
+    AutoSellRareBtn.BackgroundTransparency = 1
+    AutoSellRareBtn.Position = UDim2.new(0.756, 0, 0.108, 0)
+    AutoSellRareBtn.Size = UDim2.new(0.207, 0, 0.784, 0)
+    AutoSellRareBtn.Font = Enum.Font.SourceSansBold
+    AutoSellRareBtn.Text = "OFF"
+    AutoSellRareBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoSellRareBtn.TextScaled = true
+
+    local AutoSellRareWarna = Instance.new("Frame")
+    AutoSellRareWarna.Parent = AutoSellRareFrame
+    AutoSellRareWarna.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    AutoSellRareWarna.BorderSizePixel = 0
+    AutoSellRareWarna.Position = UDim2.new(0.756, 0, 0.135, 0)
+    AutoSellRareWarna.Size = UDim2.new(0.204, 0, 0.730, 0)
+    local autoSellRareWarnaCorner = Instance.new("UICorner")
+    autoSellRareWarnaCorner.Parent = AutoSellRareWarna
+
+    -- Fishing Speed
+    local FishingSpeedFrame = Instance.new("Frame")
+    FishingSpeedFrame.Parent = AdvancedListFrame
+    FishingSpeedFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    FishingSpeedFrame.BorderSizePixel = 0
+    FishingSpeedFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
+    local fishSpeedCorner = Instance.new("UICorner")
+    fishSpeedCorner.Parent = FishingSpeedFrame
+
+    local FishingSpeedText = Instance.new("TextLabel")
+    FishingSpeedText.Parent = FishingSpeedFrame
+    FishingSpeedText.BackgroundTransparency = 1
+    FishingSpeedText.Position = UDim2.new(0.030, 0, 0.216, 0)
+    FishingSpeedText.Size = UDim2.new(0.415, 0, 0.568, 0)
+    FishingSpeedText.Font = Enum.Font.SourceSansBold
+    FishingSpeedText.Text = "Fishing Speed:"
+    FishingSpeedText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    FishingSpeedText.TextScaled = true
+    FishingSpeedText.TextXAlignment = Enum.TextXAlignment.Left
+
+    local FishingSpeedInput = Instance.new("TextBox")
+    FishingSpeedInput.Parent = FishingSpeedFrame
+    FishingSpeedInput.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    FishingSpeedInput.BorderSizePixel = 0
+    FishingSpeedInput.Position = UDim2.new(0.500, 0, 0.135, 0)
+    FishingSpeedInput.Size = UDim2.new(0.150, 0, 0.730, 0)
+    FishingSpeedInput.Font = Enum.Font.SourceSansBold
+    FishingSpeedInput.Text = "0.5"
+    FishingSpeedInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+    FishingSpeedInput.TextScaled = true
+    local fishSpeedInputCorner = Instance.new("UICorner")
+    fishSpeedInputCorner.Parent = FishingSpeedInput
+
+    local FishingSpeedBtn = Instance.new("TextButton")
+    FishingSpeedBtn.Parent = FishingSpeedFrame
+    FishingSpeedBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    FishingSpeedBtn.BorderSizePixel = 0
+    FishingSpeedBtn.Position = UDim2.new(0.680, 0, 0.135, 0)
+    FishingSpeedBtn.Size = UDim2.new(0.100, 0, 0.730, 0)
+    FishingSpeedBtn.Font = Enum.Font.SourceSansBold
+    FishingSpeedBtn.Text = "Set"
+    FishingSpeedBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    FishingSpeedBtn.TextScaled = true
+    local fishSpeedBtnCorner = Instance.new("UICorner")
+    fishSpeedBtnCorner.Parent = FishingSpeedBtn
+
+    -- Infinite Stamina
+    local InfStaminaFrame = Instance.new("Frame")
+    InfStaminaFrame.Parent = AdvancedListFrame
+    InfStaminaFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    InfStaminaFrame.BorderSizePixel = 0
+    InfStaminaFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
+    local infStaminaCorner = Instance.new("UICorner")
+    infStaminaCorner.Parent = InfStaminaFrame
+
+    local InfStaminaText = Instance.new("TextLabel")
+    InfStaminaText.Parent = InfStaminaFrame
+    InfStaminaText.BackgroundTransparency = 1
+    InfStaminaText.Position = UDim2.new(0.030, 0, 0.216, 0)
+    InfStaminaText.Size = UDim2.new(0.415, 0, 0.568, 0)
+    InfStaminaText.Font = Enum.Font.SourceSansBold
+    InfStaminaText.Text = "Infinite Stamina:"
+    InfStaminaText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    InfStaminaText.TextScaled = true
+    InfStaminaText.TextXAlignment = Enum.TextXAlignment.Left
+
+    local InfStaminaBtn = Instance.new("TextButton")
+    InfStaminaBtn.Parent = InfStaminaFrame
+    InfStaminaBtn.BackgroundTransparency = 1
+    InfStaminaBtn.Position = UDim2.new(0.756, 0, 0.108, 0)
+    InfStaminaBtn.Size = UDim2.new(0.207, 0, 0.784, 0)
+    InfStaminaBtn.Font = Enum.Font.SourceSansBold
+    InfStaminaBtn.Text = "OFF"
+    InfStaminaBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    InfStaminaBtn.TextScaled = true
+
+    local InfStaminaWarna = Instance.new("Frame")
+    InfStaminaWarna.Parent = InfStaminaFrame
+    InfStaminaWarna.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    InfStaminaWarna.BorderSizePixel = 0
+    InfStaminaWarna.Position = UDim2.new(0.756, 0, 0.135, 0)
+    InfStaminaWarna.Size = UDim2.new(0.204, 0, 0.730, 0)
+    local infStaminaWarnaCorner = Instance.new("UICorner")
+    infStaminaWarnaCorner.Parent = InfStaminaWarna
 
     -- Page switching function
     local function showPanel(pageName)
@@ -814,6 +1376,131 @@ local function createCompleteGUI()
             sellAll:InvokeServer()
             createNotification("🛒 Items sold!", Color3.fromRGB(255, 215, 0))
         end)
+    end)
+
+    -- PLAYER FRAME CONNECTIONS
+    connections[#connections + 1] = WalkspeedBtn.MouseButton1Click:Connect(function()
+        local speed = tonumber(WalkspeedInput.Text) or 16
+        if player.Character and player.Character:FindFirstChild("Humanoid") then
+            player.Character.Humanoid.WalkSpeed = speed
+            createNotification("🏃 Walkspeed set to " .. speed, Color3.fromRGB(0, 255, 255))
+        end
+    end)
+
+    connections[#connections + 1] = JumppowerBtn.MouseButton1Click:Connect(function()
+        local jumpPower = tonumber(JumppowerInput.Text) or 50
+        if player.Character and player.Character:FindFirstChild("Humanoid") then
+            player.Character.Humanoid.JumpPower = jumpPower
+            createNotification("🦘 Jumppower set to " .. jumpPower, Color3.fromRGB(0, 255, 255))
+        end
+    end)
+
+    local noclipEnabled = false
+    connections[#connections + 1] = NoclipBtn.MouseButton1Click:Connect(function()
+        noclipEnabled = not noclipEnabled
+        NoclipBtn.Text = noclipEnabled and "ON" or "OFF"
+        NoclipWarna.BackgroundColor3 = noclipEnabled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(0, 0, 0)
+        
+        if noclipEnabled then
+            spawn(function()
+                while noclipEnabled and player.Character do
+                    for _, part in pairs(player.Character:GetChildren()) do
+                        if part:IsA("BasePart") then
+                            part.CanCollide = false
+                        end
+                    end
+                    wait(0.1)
+                end
+            end)
+            createNotification("👻 Noclip enabled", Color3.fromRGB(255, 0, 255))
+        else
+            createNotification("👻 Noclip disabled", Color3.fromRGB(255, 0, 255))
+        end
+    end)
+
+    local flyEnabled = false
+    local bodyVelocity = nil
+    connections[#connections + 1] = FlyBtn.MouseButton1Click:Connect(function()
+        flyEnabled = not flyEnabled
+        FlyBtn.Text = flyEnabled and "ON" or "OFF"
+        FlyWarna.BackgroundColor3 = flyEnabled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(0, 0, 0)
+        
+        if flyEnabled then
+            if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                bodyVelocity = Instance.new("BodyVelocity")
+                bodyVelocity.MaxForce = Vector3.new(4000, 4000, 4000)
+                bodyVelocity.Velocity = Vector3.new(0, 0, 0)
+                bodyVelocity.Parent = player.Character.HumanoidRootPart
+                createNotification("✈️ Fly enabled (E to toggle)", Color3.fromRGB(0, 255, 0))
+            end
+        else
+            if bodyVelocity then
+                bodyVelocity:Destroy()
+                bodyVelocity = nil
+            end
+            createNotification("✈️ Fly disabled", Color3.fromRGB(255, 0, 0))
+        end
+    end)
+
+    -- SECURITY FRAME CONNECTIONS
+    local antiAFKEnabled = true
+    connections[#connections + 1] = AntiAFKBtn.MouseButton1Click:Connect(function()
+        antiAFKEnabled = not antiAFKEnabled
+        AntiAFKBtn.Text = antiAFKEnabled and "ON" or "OFF"
+        AntiAFKWarna.BackgroundColor3 = antiAFKEnabled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(0, 0, 0)
+        createNotification("🛡️ Anti AFK " .. (antiAFKEnabled and "enabled" or "disabled"), Color3.fromRGB(255, 165, 0))
+    end)
+
+    local playerDetectionEnabled = true
+    connections[#connections + 1] = PlayerDetectionBtn.MouseButton1Click:Connect(function()
+        playerDetectionEnabled = not playerDetectionEnabled
+        PlayerDetectionBtn.Text = playerDetectionEnabled and "ON" or "OFF"
+        PlayerDetectionWarna.BackgroundColor3 = playerDetectionEnabled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(0, 0, 0)
+        createNotification("👥 Player Detection " .. (playerDetectionEnabled and "enabled" or "disabled"), Color3.fromRGB(255, 165, 0))
+    end)
+
+    local autoHideEnabled = false
+    connections[#connections + 1] = AutoHideBtn.MouseButton1Click:Connect(function()
+        autoHideEnabled = not autoHideEnabled
+        AutoHideBtn.Text = autoHideEnabled and "ON" or "OFF"
+        AutoHideWarna.BackgroundColor3 = autoHideEnabled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(0, 0, 0)
+        createNotification("🫥 Auto Hide GUI " .. (autoHideEnabled and "enabled" or "disabled"), Color3.fromRGB(255, 165, 0))
+    end)
+
+    -- ADVANCED FRAME CONNECTIONS
+    local autoSellRareEnabled = false
+    connections[#connections + 1] = AutoSellRareBtn.MouseButton1Click:Connect(function()
+        autoSellRareEnabled = not autoSellRareEnabled
+        AutoSellRareBtn.Text = autoSellRareEnabled and "ON" or "OFF"
+        AutoSellRareWarna.BackgroundColor3 = autoSellRareEnabled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(0, 0, 0)
+        createNotification("💎 Auto Sell Rare " .. (autoSellRareEnabled and "enabled" or "disabled"), Color3.fromRGB(255, 215, 0))
+    end)
+
+    connections[#connections + 1] = FishingSpeedBtn.MouseButton1Click:Connect(function()
+        local speed = tonumber(FishingSpeedInput.Text) or 0.5
+        Settings.FishingSpeed = speed
+        createNotification("⚡ Fishing speed set to " .. speed .. "s", Color3.fromRGB(255, 255, 0))
+    end)
+
+    local infStaminaEnabled = false
+    connections[#connections + 1] = InfStaminaBtn.MouseButton1Click:Connect(function()
+        infStaminaEnabled = not infStaminaEnabled
+        InfStaminaBtn.Text = infStaminaEnabled and "ON" or "OFF"
+        InfStaminaWarna.BackgroundColor3 = infStaminaEnabled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(0, 0, 0)
+        
+        if infStaminaEnabled then
+            spawn(function()
+                while infStaminaEnabled do
+                    wait(0.1)
+                    if player.Character and player.Character:FindFirstChild("Humanoid") then
+                        for _, child in pairs(player.Character.Humanoid:GetChildren()) do
+                            if child.Name == "creator" then child:Destroy() end
+                        end
+                    end
+                end
+            end)
+        end
+        createNotification("💪 Infinite Stamina " .. (infStaminaEnabled and "enabled" or "disabled"), Color3.fromRGB(255, 255, 0))
     end)
 
     -- Update statistics display
