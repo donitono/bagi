@@ -109,7 +109,7 @@ local function createNotification(text, color)
     local notification = Instance.new("Frame")
     notification.Name = "Notification"
     notification.Parent = gui
-    notification.BackgroundColor3 = color or Color3.fromRGB(0, 200, 0)
+    notification.BackgroundColor3 = color or CONFIG.COLORS.SUCCESS_GREEN
     notification.BorderSizePixel = 0
     notification.Position = UDim2.new(1, -250, 0, 50)
     notification.Size = UDim2.new(0, 240, 0, 50)
@@ -125,7 +125,7 @@ local function createNotification(text, color)
     textLabel.Size = UDim2.new(1, 0, 1, 0)
     textLabel.Font = Enum.Font.SourceSansBold
     textLabel.Text = text
-    textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    textLabel.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     textLabel.TextScaled = true
     
     notification:TweenPosition(
@@ -225,7 +225,7 @@ local function updateLuckLevel()
     if LuckSystem.luckXP >= requiredXP and Stats.currentLuckLevel < LuckSystem.maxLuckLevel then
         Stats.currentLuckLevel = Stats.currentLuckLevel + 1
         LuckSystem.luckXP = 0
-        createNotification("🍀 Luck Level Up! Level " .. Stats.currentLuckLevel, Color3.fromRGB(0, 255, 0))
+        createNotification("🍀 Luck Level Up! Level " .. Stats.currentLuckLevel, CONFIG.COLORS.SUCCESS_GREEN)
     end
 end
 
@@ -371,7 +371,7 @@ local function enhancedAutoFishing(Settings)
                     task.wait(1)
                     safeCall(function()
                         sellAll:InvokeServer()
-                        createNotification("🛒 Auto-sold items! (₡" .. Stats.moneyEarned .. ")", Color3.fromRGB(255, 215, 0))
+                        createNotification("🛒 Auto-sold items! (₡" .. Stats.moneyEarned .. ")", CONFIG.COLORS.WARNING_ORANGE)
                     end)
                 end
             end)
@@ -433,7 +433,7 @@ local function autoFishingAFK2()
                     task.wait(1)
                     safeCall(function()
                         sellAll:InvokeServer()
-                        createNotification("🛒 [AFK2] Auto-sold items!", Color3.fromRGB(255, 215, 0))
+                        createNotification("🛒 [AFK2] Auto-sold items!", CONFIG.COLORS.WARNING_ORANGE)
                     end)
                 end
                 
@@ -494,7 +494,7 @@ local function autoFishingExtreme()
                 if Settings.AutoSell and Stats.fishCaught % 20 == 0 then
                     safeCall(function()
                         sellAll:InvokeServer()
-                        createNotification("🛒 [EXTREME] Auto-sold items!", Color3.fromRGB(255, 215, 0))
+                        createNotification("🛒 [EXTREME] Auto-sold items!", CONFIG.COLORS.WARNING_ORANGE)
                     end)
                 end
                 
@@ -556,7 +556,7 @@ local function autoFishingBrutal()
                 if Settings.AutoSell and Stats.fishCaught % 30 == 0 then
                     safeCall(function()
                         sellAll:InvokeServer()
-                        createNotification("🛒 [BRUTAL] Auto-sold items!", Color3.fromRGB(255, 215, 0))
+                        createNotification("🛒 [BRUTAL] Auto-sold items!", CONFIG.COLORS.WARNING_ORANGE)
                     end)
                 end
                 
@@ -612,7 +612,7 @@ local function toggleGUI()
                 createNotification("🎣 GUI Opened", CONFIG.COLORS.SUCCESS_GREEN)
             else
                 floatingButton.Text = "👁️"
-                floatingButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+                floatingButton.BackgroundColor3 = CONFIG.COLORS.ACCENT_BLUE
                 createNotification("👁️ GUI Hidden", CONFIG.COLORS.WARNING_ORANGE)
             end
         end
@@ -642,7 +642,7 @@ local function createFloatingToggleButton()
     FloatingButton.Size = UDim2.new(0, 50, 0, 50)
     FloatingButton.Font = Enum.Font.SourceSansBold
     FloatingButton.Text = "🎣"
-    FloatingButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    FloatingButton.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     FloatingButton.TextSize = 20
     FloatingButton.ZIndex = 1000
     
@@ -652,7 +652,7 @@ local function createFloatingToggleButton()
     
     -- Add glow effect
     local UIStroke = Instance.new("UIStroke")
-    UIStroke.Color = Color3.fromRGB(255, 255, 255)
+    UIStroke.Color = CONFIG.COLORS.TEXT_WHITE
     UIStroke.Thickness = 2
     UIStroke.Transparency = 0.5
     UIStroke.Parent = FloatingButton
@@ -823,7 +823,7 @@ local function createCompleteGUI()
     Credit.Size = UDim2.new(0.998, 0, 0.123, 0)
     Credit.Font = Enum.Font.SourceSansBold
     Credit.Text = "Telegram @Spinnerxxx"
-    Credit.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Credit.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     Credit.TextScaled = true
 
     -- Main content line
@@ -846,7 +846,7 @@ local function createCompleteGUI()
     Tittle.ZIndex = 2
     Tittle.Font = Enum.Font.SourceSansBold
     Tittle.Text = "MAIN"
-    Tittle.TextColor3 = Color3.fromRGB(255, 255, 255)
+    Tittle.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     Tittle.TextScaled = true
 
     -- ===============================================================
@@ -894,7 +894,7 @@ local function createCompleteGUI()
     AutoFishText.Size = UDim2.new(0.415, 0, 0.568, 0)
     AutoFishText.Font = Enum.Font.SourceSansBold
     AutoFishText.Text = "Auto Fish (AFK) :"
-    AutoFishText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoFishText.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     AutoFishText.TextScaled = true
     AutoFishText.TextXAlignment = Enum.TextXAlignment.Left
 
@@ -907,7 +907,7 @@ local function createCompleteGUI()
     AutoFishButton.ZIndex = 2
     AutoFishButton.Font = Enum.Font.SourceSansBold
     AutoFishButton.Text = "OFF"
-    AutoFishButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoFishButton.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     AutoFishButton.TextScaled = true
 
     local AutoFishWarna = Instance.new("Frame")
@@ -982,7 +982,7 @@ local function createCompleteGUI()
     AutoFishExtremeText.Size = UDim2.new(0.415, 0, 0.568, 0)
     AutoFishExtremeText.Font = Enum.Font.SourceSansBold
     AutoFishExtremeText.Text = "Auto Fish (Extreme) :"
-    AutoFishExtremeText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoFishExtremeText.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     AutoFishExtremeText.TextScaled = true
     AutoFishExtremeText.TextXAlignment = Enum.TextXAlignment.Left
 
@@ -995,7 +995,7 @@ local function createCompleteGUI()
     AutoFishExtremeButton.ZIndex = 2
     AutoFishExtremeButton.Font = Enum.Font.SourceSansBold
     AutoFishExtremeButton.Text = "OFF"
-    AutoFishExtremeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoFishExtremeButton.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     AutoFishExtremeButton.TextScaled = true
 
     local AutoFishExtremeWarna = Instance.new("Frame")
@@ -1026,7 +1026,7 @@ local function createCompleteGUI()
     AutoFishBrutalText.Size = UDim2.new(0.415, 0, 0.568, 0)
     AutoFishBrutalText.Font = Enum.Font.SourceSansBold
     AutoFishBrutalText.Text = "Auto Fish (Brutal) :"
-    AutoFishBrutalText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoFishBrutalText.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     AutoFishBrutalText.TextScaled = true
     AutoFishBrutalText.TextXAlignment = Enum.TextXAlignment.Left
 
@@ -1039,7 +1039,7 @@ local function createCompleteGUI()
     AutoFishBrutalButton.ZIndex = 2
     AutoFishBrutalButton.Font = Enum.Font.SourceSansBold
     AutoFishBrutalButton.Text = "OFF"
-    AutoFishBrutalButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoFishBrutalButton.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     AutoFishBrutalButton.TextScaled = true
 
     local AutoFishBrutalWarna = Instance.new("Frame")
@@ -1079,7 +1079,7 @@ local function createCompleteGUI()
     SellAllText.Size = UDim2.new(0.415, 0, 0.568, 0)
     SellAllText.Font = Enum.Font.SourceSansBold
     SellAllText.Text = "Sell All"
-    SellAllText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    SellAllText.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     SellAllText.TextScaled = true
 
     -- Statistics Frame
@@ -1100,14 +1100,14 @@ local function createCompleteGUI()
     StatsText.Size = UDim2.new(0.940, 0, 0.568, 0)
     StatsText.Font = Enum.Font.SourceSansBold
     StatsText.Text = "🐟 Fish: 0 | Session: 0m | 🍀 Luck: Lv1"
-    StatsText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    StatsText.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     StatsText.TextScaled = true
 
     -- Weather Frame
     local WeatherFrame = Instance.new("Frame")
     WeatherFrame.Name = "WeatherFrame"
     WeatherFrame.Parent = MainListLayoutFrame
-    WeatherFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    WeatherFrame.BackgroundColor3 = CONFIG.COLORS.FRAME_BG
     WeatherFrame.BorderSizePixel = 0
     WeatherFrame.Size = UDim2.new(0.898, 0, 0.106, 0)
     
@@ -1121,7 +1121,7 @@ local function createCompleteGUI()
     WeatherText.Size = UDim2.new(0.940, 0, 0.568, 0)
     WeatherText.Font = Enum.Font.SourceSansBold
     WeatherText.Text = "☀️ Sunny | Perfect fishing weather!"
-    WeatherText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    WeatherText.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     WeatherText.TextScaled = true
 
     -- Create other page frames (initially hidden)
@@ -1153,7 +1153,7 @@ local function createCompleteGUI()
     -- Walkspeed Frame
     local WalkspeedFrame = Instance.new("Frame")
     WalkspeedFrame.Parent = PlayerListFrame
-    WalkspeedFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    WalkspeedFrame.BackgroundColor3 = CONFIG.COLORS.FRAME_BG
     WalkspeedFrame.BorderSizePixel = 0
     WalkspeedFrame.Size = UDim2.new(0.898, 0, 0, 40)
     local walkCorner = Instance.new("UICorner")
@@ -1163,36 +1163,36 @@ local function createCompleteGUI()
     WalkspeedText.Parent = WalkspeedFrame
     WalkspeedText.BackgroundTransparency = 1
     WalkspeedText.Position = UDim2.new(0.030, 0, 0, 0)
-    WalkspeedText.Size = UDim2.new(0.415, 0, 1, 0)
+    WalkspeedText.Size = UDim2.new(0.300, 0, 1, 0)
     WalkspeedText.Font = Enum.Font.SourceSansBold
     WalkspeedText.Text = "Walkspeed:"
-    WalkspeedText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    WalkspeedText.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     WalkspeedText.TextSize = 14
     WalkspeedText.TextXAlignment = Enum.TextXAlignment.Left
     WalkspeedText.TextYAlignment = Enum.TextYAlignment.Center
 
     local WalkspeedInput = Instance.new("TextBox")
     WalkspeedInput.Parent = WalkspeedFrame
-    WalkspeedInput.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    WalkspeedInput.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
     WalkspeedInput.BorderSizePixel = 0
-    WalkspeedInput.Position = UDim2.new(0.500, 0, 0.125, 0)
-    WalkspeedInput.Size = UDim2.new(0.150, 0, 0.750, 0)
+    WalkspeedInput.Position = UDim2.new(0.400, 0, 0.125, 0)
+    WalkspeedInput.Size = UDim2.new(0.180, 0, 0.750, 0)
     WalkspeedInput.Font = Enum.Font.SourceSansBold
     WalkspeedInput.Text = "16"
-    WalkspeedInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+    WalkspeedInput.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     WalkspeedInput.TextSize = 14
     local walkInputCorner = Instance.new("UICorner")
     walkInputCorner.Parent = WalkspeedInput
 
     local WalkspeedBtn = Instance.new("TextButton")
     WalkspeedBtn.Parent = WalkspeedFrame
-    WalkspeedBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    WalkspeedBtn.BackgroundColor3 = CONFIG.COLORS.ACCENT_BLUE
     WalkspeedBtn.BorderSizePixel = 0
-    WalkspeedBtn.Position = UDim2.new(0.680, 0, 0.125, 0)
-    WalkspeedBtn.Size = UDim2.new(0.100, 0, 0.750, 0)
+    WalkspeedBtn.Position = UDim2.new(0.620, 0, 0.125, 0)
+    WalkspeedBtn.Size = UDim2.new(0.150, 0, 0.750, 0)
     WalkspeedBtn.Font = Enum.Font.SourceSansBold
     WalkspeedBtn.Text = "Set"
-    WalkspeedBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    WalkspeedBtn.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     WalkspeedBtn.TextSize = 14
     local walkBtnCorner = Instance.new("UICorner")
     walkBtnCorner.Parent = WalkspeedBtn
@@ -1200,7 +1200,7 @@ local function createCompleteGUI()
     -- Jumppower Frame
     local JumppowerFrame = Instance.new("Frame")
     JumppowerFrame.Parent = PlayerListFrame
-    JumppowerFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    JumppowerFrame.BackgroundColor3 = CONFIG.COLORS.FRAME_BG
     JumppowerFrame.BorderSizePixel = 0
     JumppowerFrame.Size = UDim2.new(0.898, 0, 0, 40)
     local jumpCorner = Instance.new("UICorner")
@@ -1210,36 +1210,36 @@ local function createCompleteGUI()
     JumppowerText.Parent = JumppowerFrame
     JumppowerText.BackgroundTransparency = 1
     JumppowerText.Position = UDim2.new(0.030, 0, 0, 0)
-    JumppowerText.Size = UDim2.new(0.415, 0, 1, 0)
+    JumppowerText.Size = UDim2.new(0.300, 0, 1, 0)
     JumppowerText.Font = Enum.Font.SourceSansBold
     JumppowerText.Text = "Jumppower:"
-    JumppowerText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    JumppowerText.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     JumppowerText.TextSize = 14
     JumppowerText.TextXAlignment = Enum.TextXAlignment.Left
     JumppowerText.TextYAlignment = Enum.TextYAlignment.Center
 
     local JumppowerInput = Instance.new("TextBox")
     JumppowerInput.Parent = JumppowerFrame
-    JumppowerInput.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    JumppowerInput.BackgroundColor3 = CONFIG.COLORS.BUTTON_BG
     JumppowerInput.BorderSizePixel = 0
-    JumppowerInput.Position = UDim2.new(0.500, 0, 0.125, 0)
-    JumppowerInput.Size = UDim2.new(0.150, 0, 0.750, 0)
+    JumppowerInput.Position = UDim2.new(0.400, 0, 0.125, 0)
+    JumppowerInput.Size = UDim2.new(0.180, 0, 0.750, 0)
     JumppowerInput.Font = Enum.Font.SourceSansBold
     JumppowerInput.Text = "50"
-    JumppowerInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+    JumppowerInput.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     JumppowerInput.TextSize = 14
     local jumpInputCorner = Instance.new("UICorner")
     jumpInputCorner.Parent = JumppowerInput
 
     local JumppowerBtn = Instance.new("TextButton")
     JumppowerBtn.Parent = JumppowerFrame
-    JumppowerBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    JumppowerBtn.BackgroundColor3 = CONFIG.COLORS.ACCENT_BLUE
     JumppowerBtn.BorderSizePixel = 0
-    JumppowerBtn.Position = UDim2.new(0.680, 0, 0.125, 0)
-    JumppowerBtn.Size = UDim2.new(0.100, 0, 0.750, 0)
+    JumppowerBtn.Position = UDim2.new(0.620, 0, 0.125, 0)
+    JumppowerBtn.Size = UDim2.new(0.150, 0, 0.750, 0)
     JumppowerBtn.Font = Enum.Font.SourceSansBold
     JumppowerBtn.Text = "Set"
-    JumppowerBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    JumppowerBtn.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     JumppowerBtn.TextSize = 14
     local jumpBtnCorner = Instance.new("UICorner")
     jumpBtnCorner.Parent = JumppowerBtn
@@ -1247,7 +1247,7 @@ local function createCompleteGUI()
     -- Noclip Frame
     local NoclipFrame = Instance.new("Frame")
     NoclipFrame.Parent = PlayerListFrame
-    NoclipFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    NoclipFrame.BackgroundColor3 = CONFIG.COLORS.FRAME_BG
     NoclipFrame.BorderSizePixel = 0
     NoclipFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
     local noclipCorner = Instance.new("UICorner")
@@ -1260,7 +1260,7 @@ local function createCompleteGUI()
     NoclipText.Size = UDim2.new(0.415, 0, 0.568, 0)
     NoclipText.Font = Enum.Font.SourceSansBold
     NoclipText.Text = "Noclip:"
-    NoclipText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    NoclipText.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     NoclipText.TextScaled = true
     NoclipText.TextXAlignment = Enum.TextXAlignment.Left
 
@@ -1271,12 +1271,12 @@ local function createCompleteGUI()
     NoclipBtn.Size = UDim2.new(0.207, 0, 0.784, 0)
     NoclipBtn.Font = Enum.Font.SourceSansBold
     NoclipBtn.Text = "OFF"
-    NoclipBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    NoclipBtn.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     NoclipBtn.TextScaled = true
 
     local NoclipWarna = Instance.new("Frame")
     NoclipWarna.Parent = NoclipFrame
-    NoclipWarna.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    NoclipWarna.BackgroundColor3 = CONFIG.COLORS.OFF_STATE
     NoclipWarna.BorderSizePixel = 0
     NoclipWarna.Position = UDim2.new(0.756, 0, 0.135, 0)
     NoclipWarna.Size = UDim2.new(0.204, 0, 0.730, 0)
@@ -1286,7 +1286,7 @@ local function createCompleteGUI()
     -- Fly Frame
     local FlyFrame = Instance.new("Frame")
     FlyFrame.Parent = PlayerListFrame
-    FlyFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    FlyFrame.BackgroundColor3 = CONFIG.COLORS.FRAME_BG
     FlyFrame.BorderSizePixel = 0
     FlyFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
     local flyCorner = Instance.new("UICorner")
@@ -1299,7 +1299,7 @@ local function createCompleteGUI()
     FlyText.Size = UDim2.new(0.415, 0, 0.568, 0)
     FlyText.Font = Enum.Font.SourceSansBold
     FlyText.Text = "Fly (E to toggle):"
-    FlyText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    FlyText.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     FlyText.TextScaled = true
     FlyText.TextXAlignment = Enum.TextXAlignment.Left
 
@@ -1310,12 +1310,12 @@ local function createCompleteGUI()
     FlyBtn.Size = UDim2.new(0.207, 0, 0.784, 0)
     FlyBtn.Font = Enum.Font.SourceSansBold
     FlyBtn.Text = "OFF"
-    FlyBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    FlyBtn.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     FlyBtn.TextScaled = true
 
     local FlyWarna = Instance.new("Frame")
     FlyWarna.Parent = FlyFrame
-    FlyWarna.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    FlyWarna.BackgroundColor3 = CONFIG.COLORS.OFF_STATE
     FlyWarna.BorderSizePixel = 0
     FlyWarna.Position = UDim2.new(0.756, 0, 0.135, 0)
     FlyWarna.Size = UDim2.new(0.204, 0, 0.730, 0)
@@ -1351,7 +1351,7 @@ local function createCompleteGUI()
     for i, boatName in ipairs(boats) do
         local BoatFrame = Instance.new("Frame")
         BoatFrame.Parent = BoatListFrame
-        BoatFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+        BoatFrame.BackgroundColor3 = CONFIG.COLORS.FRAME_BG
         BoatFrame.BorderSizePixel = 0
         BoatFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
         local boatCorner = Instance.new("UICorner")
@@ -1363,7 +1363,7 @@ local function createCompleteGUI()
         BoatBtn.Size = UDim2.new(1, 0, 1, 0)
         BoatBtn.Font = Enum.Font.SourceSansBold
         BoatBtn.Text = "Spawn " .. boatName:gsub("_", " "):gsub("(%a)([%w_']*)", function(first, rest) return first:upper()..rest:lower() end)
-        BoatBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        BoatBtn.TextColor3 = CONFIG.COLORS.TEXT_WHITE
         BoatBtn.TextScaled = true
 
         -- Boat spawn connection
@@ -1435,7 +1435,7 @@ local function createCompleteGUI()
     for i, location in ipairs(teleportLocations) do
         local TpFrame = Instance.new("Frame")
         TpFrame.Parent = TeleportListFrame
-        TpFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+        TpFrame.BackgroundColor3 = CONFIG.COLORS.FRAME_BG
         TpFrame.BorderSizePixel = 0
         TpFrame.Size = UDim2.new(0.898, 0, 0, 35)
         local tpCorner = Instance.new("UICorner")
@@ -1447,7 +1447,7 @@ local function createCompleteGUI()
         TpBtn.Size = UDim2.new(1, 0, 1, 0)
         TpBtn.Font = Enum.Font.SourceSansBold
         TpBtn.Text = location.name
-        TpBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+        TpBtn.TextColor3 = CONFIG.COLORS.TEXT_WHITE
         TpBtn.TextSize = 14
         TpBtn.TextXAlignment = Enum.TextXAlignment.Left
         TpBtn.TextYAlignment = Enum.TextYAlignment.Center
@@ -1499,7 +1499,7 @@ local function createCompleteGUI()
     -- Anti AFK
     local AntiAFKFrame = Instance.new("Frame")
     AntiAFKFrame.Parent = SecurityListFrame
-    AntiAFKFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    AntiAFKFrame.BackgroundColor3 = CONFIG.COLORS.FRAME_BG
     AntiAFKFrame.BorderSizePixel = 0
     AntiAFKFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
     local antiAfkCorner = Instance.new("UICorner")
@@ -1512,7 +1512,7 @@ local function createCompleteGUI()
     AntiAFKText.Size = UDim2.new(0.415, 0, 0.568, 0)
     AntiAFKText.Font = Enum.Font.SourceSansBold
     AntiAFKText.Text = "Anti AFK:"
-    AntiAFKText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AntiAFKText.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     AntiAFKText.TextScaled = true
     AntiAFKText.TextXAlignment = Enum.TextXAlignment.Left
 
@@ -1523,12 +1523,12 @@ local function createCompleteGUI()
     AntiAFKBtn.Size = UDim2.new(0.207, 0, 0.784, 0)
     AntiAFKBtn.Font = Enum.Font.SourceSansBold
     AntiAFKBtn.Text = "ON"
-    AntiAFKBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AntiAFKBtn.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     AntiAFKBtn.TextScaled = true
 
     local AntiAFKWarna = Instance.new("Frame")
     AntiAFKWarna.Parent = AntiAFKFrame
-    AntiAFKWarna.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+    AntiAFKWarna.BackgroundColor3 = CONFIG.COLORS.SUCCESS_GREEN
     AntiAFKWarna.BorderSizePixel = 0
     AntiAFKWarna.Position = UDim2.new(0.756, 0, 0.135, 0)
     AntiAFKWarna.Size = UDim2.new(0.204, 0, 0.730, 0)
@@ -1538,7 +1538,7 @@ local function createCompleteGUI()
     -- Player Detection
     local PlayerDetectionFrame = Instance.new("Frame")
     PlayerDetectionFrame.Parent = SecurityListFrame
-    PlayerDetectionFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    PlayerDetectionFrame.BackgroundColor3 = CONFIG.COLORS.FRAME_BG
     PlayerDetectionFrame.BorderSizePixel = 0
     PlayerDetectionFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
     local playerDetectCorner = Instance.new("UICorner")
@@ -1551,7 +1551,7 @@ local function createCompleteGUI()
     PlayerDetectionText.Size = UDim2.new(0.415, 0, 0.568, 0)
     PlayerDetectionText.Font = Enum.Font.SourceSansBold
     PlayerDetectionText.Text = "Player Detection:"
-    PlayerDetectionText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    PlayerDetectionText.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     PlayerDetectionText.TextScaled = true
     PlayerDetectionText.TextXAlignment = Enum.TextXAlignment.Left
 
@@ -1562,12 +1562,12 @@ local function createCompleteGUI()
     PlayerDetectionBtn.Size = UDim2.new(0.207, 0, 0.784, 0)
     PlayerDetectionBtn.Font = Enum.Font.SourceSansBold
     PlayerDetectionBtn.Text = "ON"
-    PlayerDetectionBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    PlayerDetectionBtn.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     PlayerDetectionBtn.TextScaled = true
 
     local PlayerDetectionWarna = Instance.new("Frame")
     PlayerDetectionWarna.Parent = PlayerDetectionFrame
-    PlayerDetectionWarna.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+    PlayerDetectionWarna.BackgroundColor3 = CONFIG.COLORS.SUCCESS_GREEN
     PlayerDetectionWarna.BorderSizePixel = 0
     PlayerDetectionWarna.Position = UDim2.new(0.756, 0, 0.135, 0)
     PlayerDetectionWarna.Size = UDim2.new(0.204, 0, 0.730, 0)
@@ -1577,7 +1577,7 @@ local function createCompleteGUI()
     -- Auto Hide GUI
     local AutoHideFrame = Instance.new("Frame")
     AutoHideFrame.Parent = SecurityListFrame
-    AutoHideFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    AutoHideFrame.BackgroundColor3 = CONFIG.COLORS.FRAME_BG
     AutoHideFrame.BorderSizePixel = 0
     AutoHideFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
     local autoHideCorner = Instance.new("UICorner")
@@ -1590,7 +1590,7 @@ local function createCompleteGUI()
     AutoHideText.Size = UDim2.new(0.415, 0, 0.568, 0)
     AutoHideText.Font = Enum.Font.SourceSansBold
     AutoHideText.Text = "Auto Hide GUI:"
-    AutoHideText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoHideText.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     AutoHideText.TextScaled = true
     AutoHideText.TextXAlignment = Enum.TextXAlignment.Left
 
@@ -1601,12 +1601,12 @@ local function createCompleteGUI()
     AutoHideBtn.Size = UDim2.new(0.207, 0, 0.784, 0)
     AutoHideBtn.Font = Enum.Font.SourceSansBold
     AutoHideBtn.Text = "OFF"
-    AutoHideBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoHideBtn.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     AutoHideBtn.TextScaled = true
 
     local AutoHideWarna = Instance.new("Frame")
     AutoHideWarna.Parent = AutoHideFrame
-    AutoHideWarna.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    AutoHideWarna.BackgroundColor3 = CONFIG.COLORS.OFF_STATE
     AutoHideWarna.BorderSizePixel = 0
     AutoHideWarna.Position = UDim2.new(0.756, 0, 0.135, 0)
     AutoHideWarna.Size = UDim2.new(0.204, 0, 0.730, 0)
@@ -1640,7 +1640,7 @@ local function createCompleteGUI()
     -- Auto Sell Rare
     local AutoSellRareFrame = Instance.new("Frame")
     AutoSellRareFrame.Parent = AdvancedListFrame
-    AutoSellRareFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    AutoSellRareFrame.BackgroundColor3 = CONFIG.COLORS.FRAME_BG
     AutoSellRareFrame.BorderSizePixel = 0
     AutoSellRareFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
     local autoSellRareCorner = Instance.new("UICorner")
@@ -1653,7 +1653,7 @@ local function createCompleteGUI()
     AutoSellRareText.Size = UDim2.new(0.415, 0, 0.568, 0)
     AutoSellRareText.Font = Enum.Font.SourceSansBold
     AutoSellRareText.Text = "Auto Sell Rare:"
-    AutoSellRareText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoSellRareText.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     AutoSellRareText.TextScaled = true
     AutoSellRareText.TextXAlignment = Enum.TextXAlignment.Left
 
@@ -1664,12 +1664,12 @@ local function createCompleteGUI()
     AutoSellRareBtn.Size = UDim2.new(0.207, 0, 0.784, 0)
     AutoSellRareBtn.Font = Enum.Font.SourceSansBold
     AutoSellRareBtn.Text = "OFF"
-    AutoSellRareBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    AutoSellRareBtn.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     AutoSellRareBtn.TextScaled = true
 
     local AutoSellRareWarna = Instance.new("Frame")
     AutoSellRareWarna.Parent = AutoSellRareFrame
-    AutoSellRareWarna.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    AutoSellRareWarna.BackgroundColor3 = CONFIG.COLORS.OFF_STATE
     AutoSellRareWarna.BorderSizePixel = 0
     AutoSellRareWarna.Position = UDim2.new(0.756, 0, 0.135, 0)
     AutoSellRareWarna.Size = UDim2.new(0.204, 0, 0.730, 0)
@@ -1679,7 +1679,7 @@ local function createCompleteGUI()
     -- Fishing Speed
     local FishingSpeedFrame = Instance.new("Frame")
     FishingSpeedFrame.Parent = AdvancedListFrame
-    FishingSpeedFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    FishingSpeedFrame.BackgroundColor3 = CONFIG.COLORS.FRAME_BG
     FishingSpeedFrame.BorderSizePixel = 0
     FishingSpeedFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
     local fishSpeedCorner = Instance.new("UICorner")
@@ -1692,32 +1692,32 @@ local function createCompleteGUI()
     FishingSpeedText.Size = UDim2.new(0.415, 0, 0.568, 0)
     FishingSpeedText.Font = Enum.Font.SourceSansBold
     FishingSpeedText.Text = "Fishing Speed:"
-    FishingSpeedText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    FishingSpeedText.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     FishingSpeedText.TextScaled = true
     FishingSpeedText.TextXAlignment = Enum.TextXAlignment.Left
 
     local FishingSpeedInput = Instance.new("TextBox")
     FishingSpeedInput.Parent = FishingSpeedFrame
-    FishingSpeedInput.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    FishingSpeedInput.BackgroundColor3 = CONFIG.COLORS.OFF_STATE
     FishingSpeedInput.BorderSizePixel = 0
     FishingSpeedInput.Position = UDim2.new(0.500, 0, 0.135, 0)
     FishingSpeedInput.Size = UDim2.new(0.150, 0, 0.730, 0)
     FishingSpeedInput.Font = Enum.Font.SourceSansBold
     FishingSpeedInput.Text = "0.5"
-    FishingSpeedInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+    FishingSpeedInput.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     FishingSpeedInput.TextScaled = true
     local fishSpeedInputCorner = Instance.new("UICorner")
     fishSpeedInputCorner.Parent = FishingSpeedInput
 
     local FishingSpeedBtn = Instance.new("TextButton")
     FishingSpeedBtn.Parent = FishingSpeedFrame
-    FishingSpeedBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    FishingSpeedBtn.BackgroundColor3 = CONFIG.COLORS.OFF_STATE
     FishingSpeedBtn.BorderSizePixel = 0
     FishingSpeedBtn.Position = UDim2.new(0.680, 0, 0.135, 0)
-    FishingSpeedBtn.Size = UDim2.new(0.100, 0, 0.730, 0)
+    FishingSpeedBtn.Size = UDim2.new(0.150, 0, 0.730, 0)
     FishingSpeedBtn.Font = Enum.Font.SourceSansBold
     FishingSpeedBtn.Text = "Set"
-    FishingSpeedBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    FishingSpeedBtn.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     FishingSpeedBtn.TextScaled = true
     local fishSpeedBtnCorner = Instance.new("UICorner")
     fishSpeedBtnCorner.Parent = FishingSpeedBtn
@@ -1725,7 +1725,7 @@ local function createCompleteGUI()
     -- Infinite Stamina
     local InfStaminaFrame = Instance.new("Frame")
     InfStaminaFrame.Parent = AdvancedListFrame
-    InfStaminaFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
+    InfStaminaFrame.BackgroundColor3 = CONFIG.COLORS.FRAME_BG
     InfStaminaFrame.BorderSizePixel = 0
     InfStaminaFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
     local infStaminaCorner = Instance.new("UICorner")
@@ -1738,7 +1738,7 @@ local function createCompleteGUI()
     InfStaminaText.Size = UDim2.new(0.415, 0, 0.568, 0)
     InfStaminaText.Font = Enum.Font.SourceSansBold
     InfStaminaText.Text = "Infinite Stamina:"
-    InfStaminaText.TextColor3 = Color3.fromRGB(255, 255, 255)
+    InfStaminaText.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     InfStaminaText.TextScaled = true
     InfStaminaText.TextXAlignment = Enum.TextXAlignment.Left
 
@@ -1749,12 +1749,12 @@ local function createCompleteGUI()
     InfStaminaBtn.Size = UDim2.new(0.207, 0, 0.784, 0)
     InfStaminaBtn.Font = Enum.Font.SourceSansBold
     InfStaminaBtn.Text = "OFF"
-    InfStaminaBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    InfStaminaBtn.TextColor3 = CONFIG.COLORS.TEXT_WHITE
     InfStaminaBtn.TextScaled = true
 
     local InfStaminaWarna = Instance.new("Frame")
     InfStaminaWarna.Parent = InfStaminaFrame
-    InfStaminaWarna.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    InfStaminaWarna.BackgroundColor3 = CONFIG.COLORS.OFF_STATE
     InfStaminaWarna.BorderSizePixel = 0
     InfStaminaWarna.Position = UDim2.new(0.756, 0, 0.135, 0)
     InfStaminaWarna.Size = UDim2.new(0.204, 0, 0.730, 0)
@@ -1873,7 +1873,7 @@ local function createCompleteGUI()
     connections[#connections + 1] = NoclipBtn.MouseButton1Click:Connect(function()
         noclipEnabled = not noclipEnabled
         NoclipBtn.Text = noclipEnabled and "ON" or "OFF"
-        NoclipWarna.BackgroundColor3 = noclipEnabled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(0, 0, 0)
+        NoclipWarna.BackgroundColor3 = noclipEnabled and CONFIG.COLORS.SUCCESS_GREEN or CONFIG.COLORS.OFF_STATE
         
         if noclipEnabled then
             spawn(function()
@@ -1897,7 +1897,7 @@ local function createCompleteGUI()
     connections[#connections + 1] = FlyBtn.MouseButton1Click:Connect(function()
         flyEnabled = not flyEnabled
         FlyBtn.Text = flyEnabled and "ON" or "OFF"
-        FlyWarna.BackgroundColor3 = flyEnabled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(0, 0, 0)
+        FlyWarna.BackgroundColor3 = flyEnabled and CONFIG.COLORS.SUCCESS_GREEN or CONFIG.COLORS.OFF_STATE
         
         if flyEnabled then
             if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
@@ -1921,7 +1921,7 @@ local function createCompleteGUI()
     connections[#connections + 1] = AntiAFKBtn.MouseButton1Click:Connect(function()
         antiAFKEnabled = not antiAFKEnabled
         AntiAFKBtn.Text = antiAFKEnabled and "ON" or "OFF"
-        AntiAFKWarna.BackgroundColor3 = antiAFKEnabled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(0, 0, 0)
+        AntiAFKWarna.BackgroundColor3 = antiAFKEnabled and CONFIG.COLORS.SUCCESS_GREEN or CONFIG.COLORS.OFF_STATE
         createNotification("🛡️ Anti AFK " .. (antiAFKEnabled and "enabled" or "disabled"), Color3.fromRGB(255, 165, 0))
     end)
 
@@ -1929,7 +1929,7 @@ local function createCompleteGUI()
     connections[#connections + 1] = PlayerDetectionBtn.MouseButton1Click:Connect(function()
         playerDetectionEnabled = not playerDetectionEnabled
         PlayerDetectionBtn.Text = playerDetectionEnabled and "ON" or "OFF"
-        PlayerDetectionWarna.BackgroundColor3 = playerDetectionEnabled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(0, 0, 0)
+        PlayerDetectionWarna.BackgroundColor3 = playerDetectionEnabled and CONFIG.COLORS.SUCCESS_GREEN or CONFIG.COLORS.OFF_STATE
         createNotification("👥 Player Detection " .. (playerDetectionEnabled and "enabled" or "disabled"), Color3.fromRGB(255, 165, 0))
     end)
 
@@ -1937,7 +1937,7 @@ local function createCompleteGUI()
     connections[#connections + 1] = AutoHideBtn.MouseButton1Click:Connect(function()
         autoHideEnabled = not autoHideEnabled
         AutoHideBtn.Text = autoHideEnabled and "ON" or "OFF"
-        AutoHideWarna.BackgroundColor3 = autoHideEnabled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(0, 0, 0)
+        AutoHideWarna.BackgroundColor3 = autoHideEnabled and CONFIG.COLORS.SUCCESS_GREEN or CONFIG.COLORS.OFF_STATE
         createNotification("🫥 Auto Hide GUI " .. (autoHideEnabled and "enabled" or "disabled"), Color3.fromRGB(255, 165, 0))
     end)
 
@@ -1946,7 +1946,7 @@ local function createCompleteGUI()
     connections[#connections + 1] = AutoSellRareBtn.MouseButton1Click:Connect(function()
         autoSellRareEnabled = not autoSellRareEnabled
         AutoSellRareBtn.Text = autoSellRareEnabled and "ON" or "OFF"
-        AutoSellRareWarna.BackgroundColor3 = autoSellRareEnabled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(0, 0, 0)
+        AutoSellRareWarna.BackgroundColor3 = autoSellRareEnabled and CONFIG.COLORS.SUCCESS_GREEN or CONFIG.COLORS.OFF_STATE
         createNotification("💎 Auto Sell Rare " .. (autoSellRareEnabled and "enabled" or "disabled"), Color3.fromRGB(255, 215, 0))
     end)
 
@@ -1960,7 +1960,7 @@ local function createCompleteGUI()
     connections[#connections + 1] = InfStaminaBtn.MouseButton1Click:Connect(function()
         infStaminaEnabled = not infStaminaEnabled
         InfStaminaBtn.Text = infStaminaEnabled and "ON" or "OFF"
-        InfStaminaWarna.BackgroundColor3 = infStaminaEnabled and Color3.fromRGB(0, 255, 0) or Color3.fromRGB(0, 0, 0)
+        InfStaminaWarna.BackgroundColor3 = infStaminaEnabled and CONFIG.COLORS.SUCCESS_GREEN or CONFIG.COLORS.OFF_STATE
         
         if infStaminaEnabled then
             spawn(function()
