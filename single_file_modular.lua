@@ -762,20 +762,7 @@ local function createCompleteGUI()
     WalkspeedBtn.Text = "Set"
     WalkspeedBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
     WalkspeedBtn.TextSize = 14
-    -- Function to create consistent frame sizing
-    local function createConsistentFrame(parent, name, bgColor)
-        local frame = Instance.new("Frame")
-        frame.Name = name
-        frame.Parent = parent
-        frame.BackgroundColor3 = bgColor or Color3.fromRGB(47, 47, 47)
-        frame.BorderSizePixel = 0
-        frame.Size = UDim2.new(0.898, 0, 0, 40)
-        
-        local corner = Instance.new("UICorner")
-        corner.Parent = frame
-        
-        return frame
-    end
+    local walkBtnCorner = Instance.new("UICorner")
     walkBtnCorner.Parent = WalkspeedBtn
 
     -- Jumppower Frame
@@ -783,31 +770,32 @@ local function createCompleteGUI()
     JumppowerFrame.Parent = PlayerListFrame
     JumppowerFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
     JumppowerFrame.BorderSizePixel = 0
-    JumppowerFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
+    JumppowerFrame.Size = UDim2.new(0.898, 0, 0, 40)
     local jumpCorner = Instance.new("UICorner")
     jumpCorner.Parent = JumppowerFrame
 
     local JumppowerText = Instance.new("TextLabel")
     JumppowerText.Parent = JumppowerFrame
     JumppowerText.BackgroundTransparency = 1
-    JumppowerText.Position = UDim2.new(0.030, 0, 0.216, 0)
-    JumppowerText.Size = UDim2.new(0.415, 0, 0.568, 0)
+    JumppowerText.Position = UDim2.new(0.030, 0, 0, 0)
+    JumppowerText.Size = UDim2.new(0.415, 0, 1, 0)
     JumppowerText.Font = Enum.Font.SourceSansBold
     JumppowerText.Text = "Jumppower:"
     JumppowerText.TextColor3 = Color3.fromRGB(255, 255, 255)
-    JumppowerText.TextScaled = true
+    JumppowerText.TextSize = 14
     JumppowerText.TextXAlignment = Enum.TextXAlignment.Left
+    JumppowerText.TextYAlignment = Enum.TextYAlignment.Center
 
     local JumppowerInput = Instance.new("TextBox")
     JumppowerInput.Parent = JumppowerFrame
     JumppowerInput.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     JumppowerInput.BorderSizePixel = 0
-    JumppowerInput.Position = UDim2.new(0.500, 0, 0.135, 0)
-    JumppowerInput.Size = UDim2.new(0.150, 0, 0.730, 0)
+    JumppowerInput.Position = UDim2.new(0.500, 0, 0.125, 0)
+    JumppowerInput.Size = UDim2.new(0.150, 0, 0.750, 0)
     JumppowerInput.Font = Enum.Font.SourceSansBold
     JumppowerInput.Text = "50"
     JumppowerInput.TextColor3 = Color3.fromRGB(255, 255, 255)
-    JumppowerInput.TextScaled = true
+    JumppowerInput.TextSize = 14
     local jumpInputCorner = Instance.new("UICorner")
     jumpInputCorner.Parent = JumppowerInput
 
@@ -815,12 +803,12 @@ local function createCompleteGUI()
     JumppowerBtn.Parent = JumppowerFrame
     JumppowerBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     JumppowerBtn.BorderSizePixel = 0
-    JumppowerBtn.Position = UDim2.new(0.680, 0, 0.135, 0)
-    JumppowerBtn.Size = UDim2.new(0.100, 0, 0.730, 0)
+    JumppowerBtn.Position = UDim2.new(0.680, 0, 0.125, 0)
+    JumppowerBtn.Size = UDim2.new(0.100, 0, 0.750, 0)
     JumppowerBtn.Font = Enum.Font.SourceSansBold
     JumppowerBtn.Text = "Set"
     JumppowerBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    JumppowerBtn.TextScaled = true
+    JumppowerBtn.TextSize = 14
     local jumpBtnCorner = Instance.new("UICorner")
     jumpBtnCorner.Parent = JumppowerBtn
 
