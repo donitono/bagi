@@ -702,6 +702,7 @@ local function createCompleteGUI()
     PlayerFrame.Size = UDim2.new(0.624, 0, 0.853, 0)
     PlayerFrame.Visible = false
     PlayerFrame.ScrollBarThickness = 6
+    PlayerFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
 
     -- Player Frame Content
     local PlayerListFrame = Instance.new("Frame")
@@ -709,44 +710,45 @@ local function createCompleteGUI()
     PlayerListFrame.Parent = PlayerFrame
     PlayerListFrame.BackgroundTransparency = 1
     PlayerListFrame.Position = UDim2.new(0, 0, 0.022, 0)
-    PlayerListFrame.Size = UDim2.new(1, 0, 2, 0)
+    PlayerListFrame.Size = UDim2.new(1, 0, 1, 0)
 
     local PlayerListLayout = Instance.new("UIListLayout")
     PlayerListLayout.Parent = PlayerListFrame
     PlayerListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
     PlayerListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    PlayerListLayout.Padding = UDim.new(0, 8)
+    PlayerListLayout.Padding = UDim.new(0, 4)
 
     -- Walkspeed Frame
     local WalkspeedFrame = Instance.new("Frame")
     WalkspeedFrame.Parent = PlayerListFrame
     WalkspeedFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
     WalkspeedFrame.BorderSizePixel = 0
-    WalkspeedFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
+    WalkspeedFrame.Size = UDim2.new(0.898, 0, 0, 40)
     local walkCorner = Instance.new("UICorner")
     walkCorner.Parent = WalkspeedFrame
 
     local WalkspeedText = Instance.new("TextLabel")
     WalkspeedText.Parent = WalkspeedFrame
     WalkspeedText.BackgroundTransparency = 1
-    WalkspeedText.Position = UDim2.new(0.030, 0, 0.216, 0)
-    WalkspeedText.Size = UDim2.new(0.415, 0, 0.568, 0)
+    WalkspeedText.Position = UDim2.new(0.030, 0, 0, 0)
+    WalkspeedText.Size = UDim2.new(0.415, 0, 1, 0)
     WalkspeedText.Font = Enum.Font.SourceSansBold
     WalkspeedText.Text = "Walkspeed:"
     WalkspeedText.TextColor3 = Color3.fromRGB(255, 255, 255)
-    WalkspeedText.TextScaled = true
+    WalkspeedText.TextSize = 14
     WalkspeedText.TextXAlignment = Enum.TextXAlignment.Left
+    WalkspeedText.TextYAlignment = Enum.TextYAlignment.Center
 
     local WalkspeedInput = Instance.new("TextBox")
     WalkspeedInput.Parent = WalkspeedFrame
     WalkspeedInput.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     WalkspeedInput.BorderSizePixel = 0
-    WalkspeedInput.Position = UDim2.new(0.500, 0, 0.135, 0)
-    WalkspeedInput.Size = UDim2.new(0.150, 0, 0.730, 0)
+    WalkspeedInput.Position = UDim2.new(0.500, 0, 0.125, 0)
+    WalkspeedInput.Size = UDim2.new(0.150, 0, 0.750, 0)
     WalkspeedInput.Font = Enum.Font.SourceSansBold
     WalkspeedInput.Text = "16"
     WalkspeedInput.TextColor3 = Color3.fromRGB(255, 255, 255)
-    WalkspeedInput.TextScaled = true
+    WalkspeedInput.TextSize = 14
     local walkInputCorner = Instance.new("UICorner")
     walkInputCorner.Parent = WalkspeedInput
 
@@ -754,13 +756,26 @@ local function createCompleteGUI()
     WalkspeedBtn.Parent = WalkspeedFrame
     WalkspeedBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
     WalkspeedBtn.BorderSizePixel = 0
-    WalkspeedBtn.Position = UDim2.new(0.680, 0, 0.135, 0)
-    WalkspeedBtn.Size = UDim2.new(0.100, 0, 0.730, 0)
+    WalkspeedBtn.Position = UDim2.new(0.680, 0, 0.125, 0)
+    WalkspeedBtn.Size = UDim2.new(0.100, 0, 0.750, 0)
     WalkspeedBtn.Font = Enum.Font.SourceSansBold
     WalkspeedBtn.Text = "Set"
     WalkspeedBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-    WalkspeedBtn.TextScaled = true
-    local walkBtnCorner = Instance.new("UICorner")
+    WalkspeedBtn.TextSize = 14
+    -- Function to create consistent frame sizing
+    local function createConsistentFrame(parent, name, bgColor)
+        local frame = Instance.new("Frame")
+        frame.Name = name
+        frame.Parent = parent
+        frame.BackgroundColor3 = bgColor or Color3.fromRGB(47, 47, 47)
+        frame.BorderSizePixel = 0
+        frame.Size = UDim2.new(0.898, 0, 0, 40)
+        
+        local corner = Instance.new("UICorner")
+        corner.Parent = frame
+        
+        return frame
+    end
     walkBtnCorner.Parent = WalkspeedBtn
 
     -- Jumppower Frame
@@ -952,6 +967,7 @@ local function createCompleteGUI()
     TeleportFrame.Size = UDim2.new(0.624, 0, 0.853, 0)
     TeleportFrame.Visible = false
     TeleportFrame.ScrollBarThickness = 6
+    TeleportFrame.AutomaticCanvasSize = Enum.AutomaticSize.Y
 
     -- Teleport Frame Content
     local TeleportListFrame = Instance.new("Frame")
@@ -959,13 +975,13 @@ local function createCompleteGUI()
     TeleportListFrame.Parent = TeleportFrame
     TeleportListFrame.BackgroundTransparency = 1
     TeleportListFrame.Position = UDim2.new(0, 0, 0.022, 0)
-    TeleportListFrame.Size = UDim2.new(1, 0, 2, 0)
+    TeleportListFrame.Size = UDim2.new(1, 0, 1, 0)
 
     local TeleportListLayout = Instance.new("UIListLayout")
     TeleportListLayout.Parent = TeleportListFrame
     TeleportListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
     TeleportListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    TeleportListLayout.Padding = UDim.new(0, 8)
+    TeleportListLayout.Padding = UDim.new(0, 4)
 
     -- Teleport locations
     local teleportLocations = {
@@ -1001,7 +1017,7 @@ local function createCompleteGUI()
         TpFrame.Parent = TeleportListFrame
         TpFrame.BackgroundColor3 = Color3.fromRGB(47, 47, 47)
         TpFrame.BorderSizePixel = 0
-        TpFrame.Size = UDim2.new(0.898, 0, 0.053, 0)
+        TpFrame.Size = UDim2.new(0.898, 0, 0, 35)
         local tpCorner = Instance.new("UICorner")
         tpCorner.Parent = TpFrame
 
@@ -1012,7 +1028,14 @@ local function createCompleteGUI()
         TpBtn.Font = Enum.Font.SourceSansBold
         TpBtn.Text = location.name
         TpBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
-        TpBtn.TextScaled = true
+        TpBtn.TextSize = 14
+        TpBtn.TextXAlignment = Enum.TextXAlignment.Left
+        TpBtn.TextYAlignment = Enum.TextYAlignment.Center
+        
+        -- Add padding for text
+        local textPadding = Instance.new("UIPadding")
+        textPadding.PaddingLeft = UDim.new(0, 10)
+        textPadding.Parent = TpBtn
 
         -- Teleport connection
         connections[#connections + 1] = TpBtn.MouseButton1Click:Connect(function()
