@@ -578,6 +578,69 @@ local Settings = {
 -- ===================================================================
 --                       COMPLETE GUI CREATION
 -- ===================================================================
+local function createFloatingToggleButton()
+    -- Create separate ScreenGui for floating button so it persists
+    local FloatingGui = Instance.new("ScreenGui")
+    FloatingGui.Name = "FloatingToggle"
+    FloatingGui.Parent = player:WaitForChild("PlayerGui")
+    FloatingGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+    FloatingGui.ResetOnSpawn = false
+    
+    -- Floating Toggle Button
+    local FloatingButton = Instance.new("TextButton")
+    FloatingButton.Name = "FloatingToggle"
+    FloatingButton.Parent = FloatingGui
+    FloatingButton.BackgroundColor3 = Color3.fromRGB(0, 162, 255)
+    FloatingButton.BorderSizePixel = 0
+    FloatingButton.Position = UDim2.new(0.02, 0, 0.5, -25)
+    FloatingButton.Size = UDim2.new(0, 50, 0, 50)
+    FloatingButton.Font = Enum.Font.SourceSansBold
+    FloatingButton.Text = "🎣"
+    FloatingButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    FloatingButton.TextSize = 20
+    FloatingButton.ZIndex = 1000
+    
+    local floatingCorner = Instance.new("UICorner")
+    floatingCorner.CornerRadius = UDim.new(0, 25)
+    floatingCorner.Parent = FloatingButton
+    
+    -- Add glow effect
+    local UIStroke = Instance.new("UIStroke")
+    UIStroke.Color = Color3.fromRGB(255, 255, 255)
+    UIStroke.Thickness = 2
+    UIStroke.Transparency = 0.5
+    UIStroke.Parent = FloatingButton
+    
+    -- Make it draggable
+    local UserInputService = game:GetService("UserInputService")
+    local dragging = false
+    local dragStart = nil
+    local startPos = nil
+    
+    FloatingButton.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+            dragStart = input.Position
+            startPos = FloatingButton.Position
+        end
+    end)
+    
+    FloatingButton.InputChanged:Connect(function(input)
+        if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+            local delta = input.Position - dragStart
+            FloatingButton.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+        end
+    end)
+    
+    FloatingButton.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = false
+        end
+    end)
+    
+    return FloatingButton
+end
+
 local function createCompleteGUI()
     local ZayrosFISHIT = Instance.new("ScreenGui")
     ZayrosFISHIT.Name = CONFIG.GUI_NAME
@@ -1956,7 +2019,50 @@ end
 local function initialize()
     loadSettings()
     
-    createCompleteGUI()
+    -- Create floating toggle button first
+    local floatingButton = createFloatingToggleButton()
+    
+    -- Create main GUI
+    local gui = createCompleteGUI()
+    
+    -- Variable to track GUI visibility
+    local guiVisible = true
+    
+    -- Connect floating button to toggle GUI
+    floatingButton.MouseButton1Click:Connect(function()
+        guiVisible = not guiVisible
+        gui.Enabled = guiVisible
+        
+        -- Update floating button appearance
+        if guiVisible then
+            floatingButton.Text = "🎣"
+            floatingButton.BackgroundColor3 = Color3.fromRGB(0, 162, 255)
+            createNotification("🎣 GUI Opened", Color3.fromRGB(0, 255, 0))
+        else
+            floatingButton.Text = "👁️"
+            floatingButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+            createNotification("👁️ GUI Hidden", Color3.fromRGB(255, 165, 0))
+        end
+    end)
+    
+    -- Add hotkey support (F9 to toggle)
+    connections[#connections + 1] = UserInputService.InputBegan:Connect(function(input, gameProcessed)
+        if not gameProcessed and input.KeyCode == CONFIG.HOTKEY then
+            guiVisible = not guiVisible
+            gui.Enabled = guiVisible
+            
+            if guiVisible then
+                floatingButton.Text = "🎣"
+                floatingButton.BackgroundColor3 = Color3.fromRGB(0, 162, 255)
+                createNotification("🎣 GUI Opened (F9)", Color3.fromRGB(0, 255, 0))
+            else
+                floatingButton.Text = "👁️"
+                floatingButton.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+                createNotification("👁️ GUI Hidden (F9)", Color3.fromRGB(255, 165, 0))
+            end
+        end
+    end)
+    
     createNotification("🎣 " .. CONFIG.GUI_TITLE .. " V2.0 (Single File) loaded!", Color3.fromRGB(0, 255, 0))
     
     antiAFK()
