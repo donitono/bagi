@@ -1367,31 +1367,6 @@ local function createCompleteGUI()
         Tittle.Text = pageName:upper()
     end
 
-    -- Menu button connections
-    connections[#connections + 1] = MAIN.MouseButton1Click:Connect(function()
-        showPanel("Main")
-    end)
-
-    connections[#connections + 1] = Player.MouseButton1Click:Connect(function()
-        showPanel("Player")
-    end)
-
-    connections[#connections + 1] = SpawnBoat.MouseButton1Click:Connect(function()
-        showPanel("Boat")
-    end)
-
-    connections[#connections + 1] = TELEPORT.MouseButton1Click:Connect(function()
-        showPanel("Teleport")
-    end)
-
-    connections[#connections + 1] = SECURITY.MouseButton1Click:Connect(function()
-        showPanel("Security")
-    end)
-
-    connections[#connections + 1] = ADVANCED.MouseButton1Click:Connect(function()
-        showPanel("Advanced")
-    end)
-
     -- ===================================================================
     --                      BUTTON CONNECTIONS
     -- ===================================================================
@@ -1601,6 +1576,31 @@ local function createCompleteGUI()
                 createNotification("📦 GUI Shown", Color3.fromRGB(0, 255, 0))
             end
         end
+    end)
+
+    -- Menu button connections
+    connections[#connections + 1] = MAIN.MouseButton1Click:Connect(function()
+        showPanel("Main")
+    end)
+
+    connections[#connections + 1] = Player.MouseButton1Click:Connect(function()
+        showPanel("Player")
+    end)
+
+    connections[#connections + 1] = SpawnBoat.MouseButton1Click:Connect(function()
+        showPanel("Boat")
+    end)
+
+    connections[#connections + 1] = TELEPORT.MouseButton1Click:Connect(function()
+        showPanel("Teleport")
+    end)
+
+    connections[#connections + 1] = SECURITY.MouseButton1Click:Connect(function()
+        showPanel("Security")
+    end)
+
+    connections[#connections + 1] = ADVANCED.MouseButton1Click:Connect(function()
+        showPanel("Advanced")
     end)
 
     return ZayrosFISHIT
