@@ -970,12 +970,31 @@ local function createCompleteGUI()
     -- Teleport locations
     local teleportLocations = {
         {name = "🏪 Shop", pos = Vector3.new(-39, 10, -921)},
-        {name = "🎣 Fishing Spot 1", pos = Vector3.new(-100, 10, -800)},
-        {name = "🌊 Deep Sea", pos = Vector3.new(-500, 10, -1500)},
-        {name = "🏝️ Island", pos = Vector3.new(200, 10, 300)},
+        {name = "🎣 Shallow Waters", pos = Vector3.new(-100, 10, -800)},
+        {name = "🌊 Deep Ocean", pos = Vector3.new(-500, 10, -1500)},
         {name = "🏠 Spawn", pos = Vector3.new(0, 10, 0)},
-        {name = "⛵ Dock", pos = Vector3.new(-50, 10, -950)}
+        {name = "⛵ Dock", pos = Vector3.new(-50, 10, -950)},
+        {name = "🪸 Coral Reef", pos = Vector3.new(300, 10, -200)},
+        {name = "🕳️ Mysterious Cave", pos = Vector3.new(-800, 10, 400)},
+        {name = "🌋 Volcanic Waters", pos = Vector3.new(600, 10, 800)},
+        {name = "❄️ Frozen Lake", pos = Vector3.new(-300, 10, 600)}
     }
+
+    -- Add dynamic island locations from workspace
+    safeCall(function()
+        local tpFolder = workspace:FindFirstChild("!!!! ISLAND LOCATIONS !!!!")
+        if tpFolder then
+            for _, island in ipairs(tpFolder:GetChildren()) do
+                if island:IsA("BasePart") then
+                    table.insert(teleportLocations, {
+                        name = "🏝️ " .. island.Name,
+                        pos = island.Position,
+                        cframe = island.CFrame
+                    })
+                end
+            end
+        end
+    end)
 
     for i, location in ipairs(teleportLocations) do
         local TpFrame = Instance.new("Frame")
@@ -999,7 +1018,11 @@ local function createCompleteGUI()
         connections[#connections + 1] = TpBtn.MouseButton1Click:Connect(function()
             safeCall(function()
                 if player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-                    player.Character.HumanoidRootPart.CFrame = CFrame.new(location.pos)
+                    if location.cframe then
+                        player.Character.HumanoidRootPart.CFrame = location.cframe
+                    else
+                        player.Character.HumanoidRootPart.CFrame = CFrame.new(location.pos)
+                    end
                     createNotification("📍 Teleported to " .. location.name, Color3.fromRGB(128, 0, 255))
                 end
             end)
